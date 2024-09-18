@@ -17,7 +17,7 @@ public class Peek : MonoBehaviour
         }
         if (personAnimator == null)
         {
-            Debug.LogError("Animator component not found!");
+            Debug.LogError("Animator still not there bru");
             return;
         }
     }
@@ -37,12 +37,11 @@ public class Peek : MonoBehaviour
                 if (randomNumber == 3)
                 {
                     personAnimator.Play(animationName, 0);
-                    Debug.Log("Playing Peek animation");
                 }
             }
             else
             {
-                Debug.LogWarning($"Animation state '{animationName}' not found!");
+                Debug.LogWarning($"Animation state '{animationName}' skill issue!");
             }
         }
     }
