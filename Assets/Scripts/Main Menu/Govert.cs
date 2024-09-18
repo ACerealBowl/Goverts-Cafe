@@ -6,7 +6,7 @@ public class GovertMainMenu : MonoBehaviour
 {
     public Animator personAnimator;
     public string animationName = "GovertMainMenu";
-    public float WaitingTime = 8;
+    public float WaitingTime = 8; // added this just to check the perfect timing ngl
     private void Start()
     {
         if (personAnimator == null)
