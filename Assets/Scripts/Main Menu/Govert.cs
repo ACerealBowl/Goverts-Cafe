@@ -6,7 +6,7 @@ public class GovertMainMenu : MonoBehaviour
 {
     public Animator personAnimator;
     public string animationName = "GovertMainMenu";
-
+    public float WaitingTime = 8;
     private void Start()
     {
         if (personAnimator == null)
@@ -26,7 +26,7 @@ public class GovertMainMenu : MonoBehaviour
         // Check if the animation exists
         if (personAnimator.HasState(0, Animator.StringToHash(animationName)))
         {
-            yield return new WaitForSeconds(8);
+            yield return new WaitForSeconds(WaitingTime);
             // Play the animation
             personAnimator.Play(animationName, 0);
             // Wait to finish
