@@ -593,7 +593,7 @@ GameObject:
   - component: {fileID: 471320527}
   m_Layer: 0
   m_Name: Audio Manager
-  m_TagString: Untagged
+  m_TagString: Audio
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -611,7 +611,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   musicSource: {fileID: 1103633682}
-  sfxSource: {fileID: 2013606179}
+  SFXSource: {fileID: 2013606179}
   background: {fileID: 8300000, guid: cb76c0138439d674abe5b7152555eb6d, type: 3}
   step: {fileID: 8300000, guid: e57665ad4fda2174da4c950389e06a76, type: 3}
 --- !u!4 &471320528
@@ -2415,9 +2415,9 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
-  m_Volume: 1
+  m_audioClip: {fileID: 8300000, guid: e57665ad4fda2174da4c950389e06a76, type: 3}
+  m_PlayOnAwake: 0
+  m_Volume: 0.9
   m_Pitch: 1
   Loop: 0
   Mute: 0
