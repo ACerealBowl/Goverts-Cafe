@@ -12,7 +12,6 @@ public class DelayedCameraTransition : MonoBehaviour
     private float transitionAmount = 0f;  // Start fully visible
     private bool isTransitioning = false;
     private float targetTransitionAmount;
-
     private void Start()
     {
         transitionTexture = new Texture2D(1, 1);

@@ -10,11 +10,19 @@ public class AudioManager : MonoBehaviour
     public AudioClip step;
     public AudioClip uiHoverSound;  // added for UI hover and click
     public AudioClip uiClickSound;
-
+    
+    private bool skipIntro = false;  // for skipping
+    private CameraSwitch cameraSwitch;
     private void Start()
     {
-        musicSource.clip = background;
-        musicSource.Play();
+        cameraSwitch = GameObject.FindGameObjectWithTag("Sigma").GetComponent<CameraSwitch>();
+        skipIntro = cameraSwitch.SkipIntro;
+        if (skipIntro!=true)
+        {
+            musicSource.clip = background;
+            musicSource.Play();
+        }
+
     }
 
     public void PlaySFX(AudioClip clip)

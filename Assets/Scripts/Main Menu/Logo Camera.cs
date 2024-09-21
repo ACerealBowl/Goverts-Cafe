@@ -8,6 +8,8 @@ public class CameraSwitch : MonoBehaviour
     [SerializeField] private GameObject uiCanvas;
     [SerializeField] private GameObject sigma;
     [SerializeField] private float switchDelay = 8f;
+    [Header("---Skip that Garbage---")]
+    public bool SkipIntro = false;
 
     private void Start()
     {
@@ -22,19 +24,34 @@ public class CameraSwitch : MonoBehaviour
             Debug.LogWarning("buttons no seen bro");
         }
 
-        // Initial setup
-        logoCamera.enabled = true;
-        mainCamera.enabled = false;
-
-        // Turn off UI canvas and turn on Sigma
-        if (uiCanvas != null)
+        if(SkipIntro != true) // just incase I wanna skip the intro to test sum
         {
-            uiCanvas.SetActive(false);
-        }
-        sigma.SetActive(true);
+            // Initial setup
+            logoCamera.enabled = true;
+            mainCamera.enabled = false;
 
-        // Start the camera switch coroutine
-        StartCoroutine(SwitchToMainCamera());
+            // Turn off UI canvas and turn on Sigma
+            if (uiCanvas != null)
+            {
+                uiCanvas.SetActive(false);
+            }
+            sigma.SetActive(true);
+
+            // Start the camera switch coroutine
+            StartCoroutine(SwitchToMainCamera());
+        }
+        else // does everything with no delay
+        {
+            logoCamera.enabled = false;
+            mainCamera.enabled = true;
+
+            if (uiCanvas != null)
+            {
+                uiCanvas.SetActive(true);
+            }
+            sigma.SetActive(false);
+        }
+        
     }
 
     private IEnumerator SwitchToMainCamera()
