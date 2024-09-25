@@ -12,7 +12,7 @@ public class CameraFade : MonoBehaviour
     private Texture2D fadeTexture;
     private float fadeAmount = 1f;  // Start fully faded out
     private bool isFading = false;
-
+    public float FadeDelay = 8f;
     private void Start()
     {
         fadeTexture = new Texture2D(1, 1);
@@ -50,7 +50,7 @@ public class CameraFade : MonoBehaviour
 
     public IEnumerator StartFading(float startAlpha, float targetAlpha)
     {
-        yield return new WaitForSeconds(8);
+        yield return new WaitForSeconds(FadeDelay);
         fadeAmount = startAlpha;
         targetFadeAmount = targetAlpha;
         isFading = true;
