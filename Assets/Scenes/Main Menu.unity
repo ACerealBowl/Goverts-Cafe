@@ -1585,7 +1585,7 @@ MonoBehaviour:
   uiCanvas: {fileID: 1952729035}
   sigma: {fileID: 483197088}
   switchDelay: 8
-  SkipIntro: 0
+  SkipIntro: 1
 --- !u!4 &1154734000
 Transform:
   m_ObjectHideFlags: 0

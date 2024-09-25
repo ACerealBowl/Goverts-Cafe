@@ -9,6 +9,9 @@ EditorBuildSettings:
     path: Assets/Scenes/Main Menu.unity
     guid: 2cda990e2423bbf4892e6590ba056729
   - enabled: 1
-    path: Assets/Scenes/Play.unity
+    path: Assets/Scenes/ModeSelect.unity
+    guid: 50c6d21c828b41246aa650c259c67d36
+  - enabled: 1
+    path: Assets/Scenes/Endless.unity
     guid: e571dab4a2197a54d9c126272b52cea8
   m_configObjects: {}

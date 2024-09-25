@@ -9,12 +9,27 @@ public class CharacterGen : MonoBehaviour
     int dejavu2 = 0;
     int dejavu3 = 0;
     int randomNumber = 1;
-    void Update()
+    public float waitimg = 20f;
+    private void Start()
     {
-        while(randomNumber != dejavu && != dejavu2 && != dejavu3)
+        StartCoroutine(GenerateRandomNumber());
+    }
+
+    private IEnumerator GenerateRandomNumber()
+    {
+        while (true)
         {
-           randomNumber = Random.Range((int)min, (int)max + 1); // yes this looks like it makes sense
-           dejavu = randomNumber;
+            do
+            {
+                randomNumber = Random.Range((int)min, (int)max + 1); // yes this looks like it makes sense
+            } while (randomNumber == dejavu || randomNumber == dejavu2 || randomNumber == dejavu3);
+
+                dejavu3 = dejavu2;
+                dejavu2 = dejavu;
+                dejavu = randomNumber;
+
+                yield return new WaitForSeconds(waitimg);
+                //testing testing 1212 Debug.Log("Sigma Sigma On The Wall:" + randomNumber);
         }
 
     }
