@@ -17,4 +17,8 @@ public class MenuFrame : MonoBehaviour
     {
         Application.Quit();
     }
+    public void QuitGame()
+    {
+        Application.Quit();
+    }
 }
