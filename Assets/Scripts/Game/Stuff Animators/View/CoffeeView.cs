@@ -1,23 +1,22 @@
 using System.Collections;
 using UnityEngine;
 
-public class DishesEnter : MonoBehaviour
+public class CoffeeView : MonoBehaviour
 {
     [SerializeField] private GameObject Main;
-    [SerializeField] private GameObject Dishes;
+    [SerializeField] private GameObject Coffee;
     [SerializeField] private CameraAnimator cameraAnimator;
-
     private void ShowContent()
     {
-        StartCoroutine(DishesEnterCoroutine());
+        StartCoroutine(CoffeeViewCoroutine());
     }
 
-    private IEnumerator DishesEnterCoroutine()
+    private IEnumerator CoffeeViewCoroutine()
     {
-        cameraAnimator.PlayDishesAnimation();
+        cameraAnimator.PlayCoffeeAnimation();
 
         yield return new WaitForSeconds(0.5f);
         Main.SetActive(false);
-        Dishes.SetActive(true);
+        Coffee.SetActive(true);
     }
 }

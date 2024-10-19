@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Audio
   - Sigma
+  - Plates
   layers:
   - Default
   - TransparentFX

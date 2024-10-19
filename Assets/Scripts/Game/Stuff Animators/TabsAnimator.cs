@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
+using System.Collections;
 
 public class TabsAnimator : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
@@ -7,7 +8,7 @@ public class TabsAnimator : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     public string highlightedTrigger = "Highlight";
     public string enterTrigger = "Enter";
     public string exitTrigger = "Exit";
-
+   
     public string scriptToRunName;
 
     public void OnPointerEnter(PointerEventData eventData)
@@ -26,7 +27,6 @@ public class TabsAnimator : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     {
         tabsAnimator.SetTrigger(exitTrigger);
     }
-
     private void RunCorrespondingScript()
     {
         if (!string.IsNullOrEmpty(scriptToRunName))
