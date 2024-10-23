@@ -8,6 +8,9 @@ public class CameraAnimator : MonoBehaviour
     private SpriteRenderer[] plateRenderers;
     public Plates plateFinder;
     public Animator Platorz;
+    public Animator cupsAnimator;
+    public bool DishesMenu = false;
+   [SerializeField] private CupSystem cupSystem;
 
     private void Start()
     {
@@ -15,6 +18,7 @@ public class CameraAnimator : MonoBehaviour
         plateRenderers = platesObject.GetComponentsInChildren<SpriteRenderer>(true);
         StartCoroutine(HidePlates());
         Platorz.SetTrigger("idle");
+        cupsAnimator.SetTrigger("Hide");
 
     }
     public void UNPLATEme ()
@@ -43,6 +47,7 @@ public class CameraAnimator : MonoBehaviour
     {
         StartCoroutine(AnimationSequence("DishesView"));
         StartCoroutine(HidePlates());
+        StartCoroutine(ShowCupsSigma());
     }
 
     public void PlayCoffeeAnimation()
@@ -64,6 +69,33 @@ public class CameraAnimator : MonoBehaviour
         StartCoroutine(AnimationSequence("CashRegisterView"));
         StartCoroutine(ShowPlates());
         Platorz.SetTrigger("CashRegister");
+    }
+
+    public void FortniteCups()
+    {
+        StartCoroutine(HideCupsSigma());
+        DishesMenu = false;
+    }
+
+    private IEnumerator HideCupsSigma()
+    {
+        yield return new WaitForSeconds(0.5f);
+        cupsAnimator.SetTrigger("Hide");
+    }
+
+    private IEnumerator ShowCupsSigma()
+    {
+        if(GetRequiredCups() != 0)
+        {
+            yield return new WaitForSeconds(0.5f);
+            cupsAnimator.SetTrigger("Show");
+            DishesMenu = true;
+        }
+
+    }
+    private int GetRequiredCups() // check for cups
+    {
+        return cupSystem.requiredCups;
     }
 
     private IEnumerator AnimationSequence(string triggerName)
