@@ -8,6 +8,7 @@ public class CupSystem : MonoBehaviour
     public int requiredCups = 0;
     private float updateInterval = 30f;
     [SerializeField] private CameraAnimator cameraAnimator;
+    public bool DeadCups = false;   
 
     private void Start()
     {
@@ -49,6 +50,7 @@ public class CupSystem : MonoBehaviour
         else
         {
             Debug.LogWarning($"Cup requirement {requiredCups} has exceeded 20!");
+            DeadCups = true; 
         }
 
         // Trigger animation to show new cups added and check for annoying ass tab
