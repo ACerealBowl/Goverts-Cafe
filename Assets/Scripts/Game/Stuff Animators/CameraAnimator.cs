@@ -10,21 +10,31 @@ public class CameraAnimator : MonoBehaviour
     public Animator Platorz;
     public Animator cupsAnimator;
     public bool DishesMenu = false;
-   [SerializeField] private CupSystem cupSystem;
+    [SerializeField] private CupSystem cupSystem;
 
     private void Start()
     {
         GameObject platesObject = GameObject.FindGameObjectWithTag("Plates");
         plateRenderers = platesObject.GetComponentsInChildren<SpriteRenderer>(true);
+        StartCoroutine(InitialSetup());
+    }
+
+    private IEnumerator InitialSetup()
+    {
         StartCoroutine(HidePlates());
         Platorz.SetTrigger("idle");
-        cupsAnimator.SetTrigger("Hide");
 
+        // Ensure cups are hidden at start
+        yield return new WaitForSeconds(0.1f); // Small delay to ensure animation system is ready
+        StartCoroutine(HideCupsSigma());
+        DishesMenu = false;
     }
-    public void UNPLATEme ()
+
+    public void UNPLATEme()
     {
         StartCoroutine(HidePlates());
     }
+
     private IEnumerator ShowPlates()
     {
         yield return new WaitForSeconds(0.5f);
@@ -85,17 +95,22 @@ public class CameraAnimator : MonoBehaviour
 
     private IEnumerator ShowCupsSigma()
     {
-        if(GetRequiredCups() != 0)
+        yield return new WaitForSeconds(0.5f);
+        if (!cupSystem.HasNoCups)
         {
-            yield return new WaitForSeconds(0.5f);
             cupsAnimator.SetTrigger("Show");
             DishesMenu = true;
         }
-
+        else
+        {
+            cupsAnimator.SetTrigger("Hide");
+            DishesMenu = false;
+        }
     }
-    private int GetRequiredCups() // check for cups
+
+    private bool GetRequiredCups()
     {
-        return cupSystem.requiredCups;
+        return !cupSystem.HasNoCups;
     }
 
     private IEnumerator AnimationSequence(string triggerName)

@@ -1,75 +1,168 @@
+using System;
 using UnityEngine;
-using System.Collections;
+
 public class CoffeeMachine : MonoBehaviour
 {
     [SerializeField] private Animator coffeeAnimator;
-    public float time = 8f;
-    private int currentCups = 0;
-    private const int MAX_CUPS = 2;
-    private float cupTimer = 0f;
-    private bool cupReady = false;
+    [SerializeField] private CleanCups cleanCupsSystem;
+    [SerializeField] private GameObject cappuccino;
+    private const float BREW_TIME = 8f;
+    private class CupSlot
+    {
+        public bool isPresent;
+        public bool isFilled;
+        public float brewTimer;
+        public Vector3 position;
+
+        public void Reset()
+        {
+            isPresent = false;
+            isFilled = false;
+            brewTimer = 0f;
+        }
+
+        public void StartBrewing(Vector3 pos)
+        {
+            isPresent = true;
+            isFilled = false;
+            brewTimer = 0f;
+            position = pos;
+        }
+    }
+
+    private CupSlot[] slots = new CupSlot[2] { new CupSlot(), new CupSlot() };
+
+    private void Start()
+    {
+        // Reset animation state at start
+        if (coffeeAnimator != null)
+        {
+            coffeeAnimator.SetTrigger("idle");
+        }
+    }
 
     private void Update()
     {
-        if (currentCups > 0 && !cupReady)
+        bool stateChanged = false;
+
+        for (int i = 0; i < slots.Length; i++)
         {
-            cupTimer += Time.deltaTime;
-            if (cupTimer >= time)
+            if (slots[i].isPresent && !slots[i].isFilled)
             {
-                cupReady = true;
-                Debug.Log($"Coffee RISE");
+                slots[i].brewTimer += Time.deltaTime;
+                if (slots[i].brewTimer >= BREW_TIME)
+                {
+                    slots[i].isFilled = true;
+                    stateChanged = true;
+                    Debug.Log($"Cup in slot {i} is now filled");
+                }
             }
+        }
+
+        if (stateChanged)
+        {
+            UpdateAnimation();
+        }
+    }
+
+    private void OnMouseDown()
+    {
+        Vector3 clickPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        int position;
+        if (TryRemoveCup(clickPosition, out position))
+        {
+            Debug.Log($"Successfully removed cup from slot {position}");
         }
     }
 
     public bool CanAcceptCup()
     {
-        return currentCups < MAX_CUPS;
+        Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        int slotIndex = mousePos.x < transform.position.x ? 0 : 1;
+        return !slots[slotIndex].isPresent;
     }
 
-    public bool CanRemoveCup()
+    public void AddCup(Vector3 position)
     {
-        return cupReady && currentCups > 0;
-    }
+        int slotIndex = position.x < transform.position.x ? 0 : 1;
 
-    public void AddCup()
-    {
-        if (CanAcceptCup())
+        if (!slots[slotIndex].isPresent)
         {
-            currentCups++;
-            cupTimer = 0f;
-            cupReady = false;
+            slots[slotIndex].StartBrewing(position);
             UpdateAnimation();
+            Debug.Log($"Added cup to slot {slotIndex} at position {position}");
         }
     }
 
-    public void RemoveCup()
+    public bool TryRemoveCup(Vector3 clickPosition, out int position)
     {
-        if (currentCups > 0)
+        position = clickPosition.x < transform.position.x ? 0 : 1;
+
+        if (slots[position].isPresent && slots[position].isFilled)
         {
-            currentCups--;
-            cupReady = false;
-            cupTimer = 0f;
+            Vector3 spawnPos = slots[position].position;
+            cleanCupsSystem.SpawnFilledCup(spawnPos, position);
+            slots[position].Reset();
             UpdateAnimation();
+
+            if (cappuccino != null)
+            {
+                cappuccino.SetActive(true);
+                Debug.Log($"Cappuccino activated after cup removal from slot {position}!");
+            }
+            else
+            {
+                Debug.LogWarning("Cappuccino reference is missing in CoffeeMachine.");
+            }
+            return true;
         }
+        return false;
     }
+
+
 
     private void UpdateAnimation()
     {
-        if (coffeeAnimator != null)
+        if (coffeeAnimator == null) return;
+
+        // Reset all triggers first
+        coffeeAnimator.ResetTrigger("idle");
+        coffeeAnimator.ResetTrigger("LeftCup");
+        coffeeAnimator.ResetTrigger("RightCup");
+        coffeeAnimator.ResetTrigger("LeftCupFilled");
+        coffeeAnimator.ResetTrigger("RightCupFilled");
+        coffeeAnimator.ResetTrigger("BothCupsFilled");
+        coffeeAnimator.ResetTrigger("LeftFilledRightNot");
+        coffeeAnimator.ResetTrigger("RightFilledLeftNot");
+        coffeeAnimator.ResetTrigger("BothCupsEmpty");
+
+        string triggerName = DetermineAnimationState();
+        Debug.Log($"Setting animation trigger: {triggerName}");
+        coffeeAnimator.SetTrigger(triggerName);
+    }
+
+    private string DetermineAnimationState()
+    {
+        if (!slots[0].isPresent && !slots[1].isPresent)
+            return "idle";
+
+        if (slots[0].isPresent && !slots[1].isPresent)
+            return slots[0].isFilled ? "LeftCupFilled" : "LeftCup";
+
+        if (!slots[0].isPresent && slots[1].isPresent)
+            return slots[1].isFilled ? "RightCupFilled" : "RightCup";
+
+        if (slots[0].isPresent && slots[1].isPresent)
         {
-            switch (currentCups)
-            {
-                case 0:
-                    coffeeAnimator.SetTrigger("Empty");
-                    break;
-                case 1:
-                    coffeeAnimator.SetTrigger("OneCup");
-                    break;
-                case 2:
-                    coffeeAnimator.SetTrigger("TwoCups");
-                    break;
-            }
+            if (slots[0].isFilled && slots[1].isFilled)
+                return "BothCupsFilled";
+            if (slots[0].isFilled && !slots[1].isFilled)
+                return "LeftFilledRightNot";
+            if (!slots[0].isFilled && slots[1].isFilled)
+                return "RightFilledLeftNot";
+            return "BothCupsEmpty";
         }
+
+        return "idle";
     }
 }

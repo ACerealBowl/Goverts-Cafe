@@ -1,4 +1,5 @@
 using UnityEngine;
+
 public class SingularCup : MonoBehaviour
 {
     private CleanCups cleanCups;
@@ -16,7 +17,7 @@ public class SingularCup : MonoBehaviour
         {
             if (coffeeMachine != null && coffeeMachine.CanAcceptCup())
             {
-                coffeeMachine.AddCup();
+                coffeeMachine.AddCup(transform.position);  // Now passing the cup's position
                 if (cleanCups != null)
                 {
                     cleanCups.ProcessEmptyCup();
@@ -30,7 +31,7 @@ public class SingularCup : MonoBehaviour
         RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, Vector2.zero);
         foreach (RaycastHit2D hit in hits)
         {
-            if (hit.collider.gameObject.name.ToLower().Contains("coffeemachine"))
+            if (hit.collider.CompareTag("CoffeeMachine"))  // Changed to use tag instead of name
             {
                 return true;
             }

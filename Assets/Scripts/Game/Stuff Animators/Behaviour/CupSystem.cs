@@ -3,61 +3,55 @@ using System.Collections;
 
 public class CupSystem : MonoBehaviour
 {
-    [SerializeField] private GameObject singleCup;
+    [SerializeField] private GameObject cup;
+    [SerializeField] private GameObject dishwasher;
+    [SerializeField] private GameObject cupsHD;
     [SerializeField] private Animator cupsAnimator;
-    public int requiredCups = 0;
-    private float updateInterval = 30f;
     [SerializeField] private CameraAnimator cameraAnimator;
-    public bool DeadCups = false;   
+    public int dirtyCupsCount = 0;
+    private const int MAX_CUPS = 20;
+    private GameObject activeDirtyCup;
+    public bool DeadCups => dirtyCupsCount >= MAX_CUPS;
+    public bool HasNoCups => dirtyCupsCount <= 0;
 
     private void Start()
     {
-        if (singleCup != null)
-            singleCup.SetActive(false);
-
-        // Initial cup requirement
+        if (cup != null)
+            cup.SetActive(false);
         AddRandomCups();
         StartCoroutine(UpdateRequiredCupsRoutine());
+        UpdateCleanCupsVisibility();
     }
 
     private void Update()
     {
-        if (singleCup.activeSelf)
+        if (activeDirtyCup != null && activeDirtyCup.activeSelf)
         {
-            Vector3 mousePos = Input.mousePosition; // singular cup movement idunno
+            Vector3 mousePos = Input.mousePosition;
             mousePos.z = -Camera.main.transform.position.z;
-            Vector3 worldPos = Camera.main.ScreenToWorldPoint(mousePos);
-            singleCup.transform.position = worldPos;
+            activeDirtyCup.transform.position = Camera.main.ScreenToWorldPoint(mousePos);
         }
     }
 
     private void OnMouseDown()
     {
-        if (gameObject.activeSelf && !singleCup.activeSelf)
+        if (gameObject.activeSelf && activeDirtyCup == null)
         {
-            singleCup.SetActive(true);
+            activeDirtyCup = cup;
+            activeDirtyCup.SetActive(true);
         }
     }
 
     private void AddRandomCups()
     {
-        if (requiredCups < 20)
+        if (dirtyCupsCount < MAX_CUPS)
         {
             int additionalCups = Random.Range(3, 7);
-            requiredCups += additionalCups;
-            Debug.Log($"Added {additionalCups} Cups!");
-        }
-        else
-        {
-            Debug.LogWarning($"Cup requirement {requiredCups} has exceeded 20!");
-            DeadCups = true; 
-        }
-
-        // Trigger animation to show new cups added and check for annoying ass tab
-        if (cupsAnimator != null)
-        {
+            dirtyCupsCount = Mathf.Min(dirtyCupsCount + additionalCups, MAX_CUPS);
+            Debug.Log($"Added {additionalCups} dirty cups. Total: {dirtyCupsCount}");
             if (GetDishesMenuState())
-            cupsAnimator.SetTrigger("Show");
+                cupsAnimator.SetTrigger("Show");
+            UpdateCleanCupsVisibility();
         }
     }
     private bool GetDishesMenuState() // check if menu is on (ty domnul de info)
@@ -65,30 +59,45 @@ public class CupSystem : MonoBehaviour
         return cameraAnimator.DishesMenu;
     }
 
+    private void UpdateCleanCupsVisibility()
+    {
+        if (cupsHD != null)
+            cupsHD.SetActive(!DeadCups);
+
+        if (cupsAnimator != null)
+        {
+            if (HasNoCups)
+            {
+                cupsAnimator.SetTrigger("Hide");
+            }
+        }
+    }
+
     private IEnumerator UpdateRequiredCupsRoutine()
     {
         while (true)
         {
-            yield return new WaitForSeconds(updateInterval);
+            yield return new WaitForSeconds(30f);
             AddRandomCups();
         }
     }
 
-    public void ProcessCup()
+    public void ProcessDirtyCup()
     {
-        requiredCups--;
-        singleCup.SetActive(false);
-
-        if (requiredCups == 0)
+        if (activeDirtyCup != null)
         {
-            if (cupsAnimator != null)
-            {
-                cupsAnimator.SetTrigger("Hide");
-            }
-            else
-            {
-                gameObject.SetActive(false);
-            }
+            dirtyCupsCount--;
+            activeDirtyCup.SetActive(false);
+            activeDirtyCup = null;
+            UpdateCleanCupsVisibility();
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject == dishwasher)
+        {
+            ProcessDirtyCup();
         }
     }
 }

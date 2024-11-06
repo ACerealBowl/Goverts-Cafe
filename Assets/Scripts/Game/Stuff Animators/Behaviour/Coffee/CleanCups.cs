@@ -1,82 +1,84 @@
 using UnityEngine;
-using System.Collections;
 
 public class CleanCups : MonoBehaviour
 {
-        
-    [SerializeField] private GameObject singularCup;
-    [SerializeField] private GameObject filledCup;
-    [SerializeField] private Animator cupsAnimator;
+    [SerializeField] private GameObject mtCup;
+    [SerializeField] private GameObject cappuccino;
     [SerializeField] private CupSystem cupSystem;
+
     private GameObject activeEmptyCup;
     private GameObject activeFilledCup;
-    private bool isAnimationCoroutineRunning = false;
+
     private void Start()
     {
-        if (singularCup != null)
-            singularCup.SetActive(false);
-        if (filledCup != null)
-            filledCup.SetActive(false);
+        if (mtCup != null)
+        {
+            mtCup.SetActive(false);
+        }
     }
 
     private void Update()
     {
-        // Handle empty cup movement
-        if (activeEmptyCup != null && activeEmptyCup.activeSelf)
-        {
-            Vector3 mousePos = Input.mousePosition;
-            mousePos.z = -Camera.main.transform.position.z;
-            Vector3 worldPos = Camera.main.ScreenToWorldPoint(mousePos);
-            activeEmptyCup.transform.position = worldPos;
-        }
+        UpdateCupPositions();
+        HandleInput();
+    }
 
-        // Handle filled cup movement
-        if (activeFilledCup != null && activeFilledCup.activeSelf)
+    private void UpdateCupPositions()
+    {
+        if (activeEmptyCup != null || activeFilledCup != null)
         {
-            Vector3 mousePos = Input.mousePosition;
-            mousePos.z = -Camera.main.transform.position.z;
-            Vector3 worldPos = Camera.main.ScreenToWorldPoint(mousePos);
-            activeFilledCup.transform.position = worldPos;
-        }
+            Vector3 mouseWorldPos = GetMouseWorldPosition();
 
-        if (Input.GetMouseButtonDown(1))  // 1 is right mouse button!!!1!1
-        {
-            ProcessFilledCup();  // This will remove the cup ig
-        }
-
-        if (!isAnimationCoroutineRunning)
-        {
-            isAnimationCoroutineRunning = true;
-            if (cupSystem.DeadCups)
+            if (activeEmptyCup != null && activeEmptyCup.activeSelf)
             {
-                StartCoroutine(ExceededCups());
+                activeEmptyCup.transform.position = mouseWorldPos;
             }
-            else
+
+            if (activeFilledCup != null)
             {
-                StartCoroutine(NormalCups());
+                activeFilledCup.transform.position = mouseWorldPos;
             }
         }
     }
 
-    private IEnumerator ExceededCups()
+    private Vector3 GetMouseWorldPosition()
     {
-        yield return new WaitForSeconds(60f);
-       cupsAnimator.SetTrigger("ExceedLimit");
-        isAnimationCoroutineRunning = false;
+        Vector3 mousePos = Input.mousePosition;
+        mousePos.z = -Camera.main.transform.position.z;
+        Vector3 worldPos = Camera.main.ScreenToWorldPoint(mousePos);
+        worldPos.z = 0;
+        return worldPos;
     }
-    private IEnumerator NormalCups()
+
+    private void HandleInput()
     {
-        yield return new WaitForSeconds(60f);
-        cupsAnimator.SetTrigger("idle");
-        isAnimationCoroutineRunning = false;
+        if (Input.GetMouseButtonDown(1))
+        {
+            CancelActiveCups();
+        }
+    }
+
+    private void CancelActiveCups()
+    {
+        if (activeEmptyCup != null)
+        {
+            activeEmptyCup.SetActive(false);
+            activeEmptyCup = null;
+        }
+        if (activeFilledCup != null)
+        {
+            Destroy(activeFilledCup);
+            activeFilledCup = null;
+        }
     }
 
     private void OnMouseDown()
     {
-        if (gameObject.activeSelf && activeEmptyCup == null)
+        if (gameObject.activeSelf && activeEmptyCup == null && activeFilledCup == null && !cupSystem.DeadCups)
         {
-            activeEmptyCup = singularCup;
+            activeEmptyCup = mtCup;
             activeEmptyCup.SetActive(true);
+            activeEmptyCup.transform.position = GetMouseWorldPosition();
         }
     }
 
@@ -89,21 +91,20 @@ public class CleanCups : MonoBehaviour
         }
     }
 
-    public void SpawnFilledCup(Vector3 position)
+    public void SpawnFilledCup(Vector3 position, int cupPosition)
     {
-        if (filledCup != null && activeFilledCup == null)
+        if (cappuccino != null && activeFilledCup == null)
         {
-            activeFilledCup = filledCup;
-            activeFilledCup.transform.position = position;
-            activeFilledCup.SetActive(true);
-        }
-    }
-    public void ProcessFilledCup()
-    {
-        if (activeFilledCup != null)
-        {
-            activeFilledCup.SetActive(false);
-            activeFilledCup = null;
+            Vector3 mousePos = GetMouseWorldPosition();
+            activeFilledCup = Instantiate(cappuccino, mousePos, Quaternion.identity);
+
+            FilledCup filledCupScript = activeFilledCup.GetComponent<FilledCup>();
+            if (filledCupScript != null)
+            {
+                filledCupScript.SetCupPosition(cupPosition);
+            }
+
+            Debug.Log($"Spawned filled cup for position {cupPosition} at {mousePos}");
         }
     }
 }

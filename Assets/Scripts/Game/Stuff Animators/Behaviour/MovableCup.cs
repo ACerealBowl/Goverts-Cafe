@@ -20,7 +20,7 @@ public class MovableCup : MonoBehaviour
 
             if (cupSystem != null)
             {
-                cupSystem.ProcessCup();
+                cupSystem.ProcessDirtyCup();
             }
         }
     }
