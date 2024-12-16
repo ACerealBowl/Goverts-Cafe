@@ -5476,7 +5476,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fadeDuration: 0.5
   fadeColor: {r: 0, g: 0, b: 0, a: 1}
-  initialFadeDelay: 2
+  initialFadeDelay: 1
 --- !u!114 &2131373637
 MonoBehaviour:
   m_ObjectHideFlags: 0

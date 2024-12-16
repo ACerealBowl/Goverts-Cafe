@@ -58,5 +58,6 @@ public class ModeAudioManager : MonoBehaviour
 
         // Load the new scene after the fade-out is complete
         SceneManager.LoadScene(sceneName);
+        Destroy(gameObject);
     }
 }
