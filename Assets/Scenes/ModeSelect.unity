@@ -2113,7 +2113,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fadeDuration: 0.5
   fadeColor: {r: 0, g: 0, b: 0, a: 1}
-  FadeDelay: 0.5
+  FadeDelay: 1
 --- !u!1 &1661589291
 GameObject:
   m_ObjectHideFlags: 0
