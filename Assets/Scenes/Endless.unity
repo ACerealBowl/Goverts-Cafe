@@ -133,7 +133,7 @@ GameObject:
   - component: {fileID: 21562640}
   - component: {fileID: 21562641}
   m_Layer: 0
-  m_Name: plate1
+  m_Name: Leftplate
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1203,7 +1203,7 @@ GameObject:
   - component: {fileID: 552450539}
   - component: {fileID: 552450540}
   m_Layer: 0
-  m_Name: plate2
+  m_Name: Rightplate
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1264,7 +1264,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1567834547
   m_SortingLayer: 3
-  m_SortingOrder: 2
+  m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: f7b39ab33c2ac134d9cbca50492ce00f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -1784,7 +1784,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 811782062}
-  - component: {fileID: 811782063}
   - component: {fileID: 811782064}
   - component: {fileID: 811782065}
   m_Layer: 0
@@ -1812,18 +1811,6 @@ Transform:
   - {fileID: 1616059257}
   m_Father: {fileID: 1287446825}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &811782063
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 811782061}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8598e84352204c24796a063e0c036ca8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!95 &811782064
 Animator:
   serializedVersion: 5
@@ -1854,7 +1841,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 811782061}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8598e84352204c24796a063e0c036ca8, type: 3}
+  m_Script: {fileID: 11500000, guid: 7339a86c02c87ff41adc4ad902d1dc48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &868720056
@@ -1943,7 +1930,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1567834547
   m_SortingLayer: 3
-  m_SortingOrder: 2
+  m_SortingOrder: 4
   m_Sprite: {fileID: 21300000, guid: b7d0c558f81ee414dba67fed0ada1dba, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -2178,6 +2165,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 2131373637}
+        m_TargetAssemblyTypeName: CameraAnimator, Assembly-CSharp
+        m_MethodName: HideCoffeeMachine
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &995795367
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2284,6 +2283,106 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1047981239
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1047981240}
+  - component: {fileID: 1047981241}
+  - component: {fileID: 1047981242}
+  m_Layer: 0
+  m_Name: globalCoffeeMachine
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1047981240
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1047981239}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -959.4042, y: -538.6059, z: -0.0125226}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1977129036}
+  m_Father: {fileID: 1287446825}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!95 &1047981241
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1047981239}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 6a1affdac75ac564f862d18df5f6ed94, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!61 &1047981242
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1047981239}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1}
+  m_EdgeRadius: 0
 --- !u!1 &1070382155
 GameObject:
   m_ObjectHideFlags: 0
@@ -2934,6 +3033,7 @@ RectTransform:
   m_Children:
   - {fileID: 45955271}
   - {fileID: 811782062}
+  - {fileID: 1047981240}
   - {fileID: 1668001580}
   - {fileID: 526612837}
   - {fileID: 880269545}
@@ -3152,7 +3252,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1567834547
   m_SortingLayer: 3
-  m_SortingOrder: 2
+  m_SortingOrder: 4
   m_Sprite: {fileID: 21300000, guid: 89f9f795e10f4fc419306da5b5757b47, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -3631,7 +3731,7 @@ GameObject:
   - component: {fileID: 1616059257}
   - component: {fileID: 1616059258}
   m_Layer: 0
-  m_Name: plate3
+  m_Name: Topplate
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3735,7 +3835,6 @@ Transform:
   m_Children:
   - {fileID: 995795364}
   - {fileID: 1227980119}
-  - {fileID: 1977129036}
   - {fileID: 2108392918}
   - {fileID: 1469950084}
   - {fileID: 868720057}
@@ -4665,7 +4764,7 @@ GameObject:
   - component: {fileID: 1977129037}
   - component: {fileID: 1977129040}
   - component: {fileID: 1977129039}
-  - component: {fileID: 1977129038}
+  - component: {fileID: 1977129041}
   m_Layer: 0
   m_Name: coffeemachine(sideways)
   m_TagString: CoffeeMachine
@@ -4682,11 +4781,11 @@ Transform:
   m_GameObject: {fileID: 1977129035}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -2.9674072, y: 0.5151367, z: 3.0125008}
-  m_LocalScale: {x: 0.93000007, y: 0.93000007, z: 0.93000007}
+  m_LocalPosition: {x: -4.0458374, y: -0.8640747, z: 0.0125226}
+  m_LocalScale: {x: 0.9300001, y: 0.93000007, z: 0.9300001}
   m_ConstrainProportionsScale: 1
   m_Children: []
-  m_Father: {fileID: 1625840467}
+  m_Father: {fileID: 1047981240}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1977129037
 SpriteRenderer:
@@ -4740,7 +4839,45 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!61 &1977129038
+--- !u!95 &1977129039
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1977129035}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 773aca78067b39141be05da62daed53d, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1977129040
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1977129035}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 504fcd173e52a504f831afb568d23786, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  coffeeAnimator: {fileID: 1977129039}
+  cleanCupsSystem: {fileID: 2108392921}
+  cappuccino: {fileID: 868720056}
+  leftSlotPosition: {x: -4.32, y: 0.14, z: -10}
+  rightSlotPosition: {x: -2.31, y: 0.35, z: -10}
+--- !u!61 &1977129041
 BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -4785,42 +4922,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 8.97, y: 6.21}
   m_EdgeRadius: 0
---- !u!95 &1977129039
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1977129035}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 773aca78067b39141be05da62daed53d, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
---- !u!114 &1977129040
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1977129035}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 504fcd173e52a504f831afb568d23786, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  coffeeAnimator: {fileID: 1977129039}
-  cleanCupsSystem: {fileID: 2108392921}
-  cappuccino: {fileID: 868720056}
 --- !u!1 &2002933643
 GameObject:
   m_ObjectHideFlags: 0
@@ -4974,7 +5075,7 @@ CapsuleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.00016163757, y: -0.00002127824}
+  m_Offset: {x: 0, y: 0}
   m_Size: {x: 4.070002, y: 2.480145}
   m_Direction: 1
 --- !u!114 &2108392921
@@ -5377,9 +5478,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cameraAnimator: {fileID: 2131373635}
   publicFade: {fileID: 2131373636}
-  plateFinder: {fileID: 811782063}
+  plateFinder: {fileID: 811782065}
   Platorz: {fileID: 811782064}
   cupsAnimator: {fileID: 1668001584}
+  CoffeeAnimator: {fileID: 1047981241}
   DishesMenu: 0
   cupSystem: {fileID: 1668001582}
 --- !u!1660057539 &9223372036854775807

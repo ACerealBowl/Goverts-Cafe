@@ -6,6 +6,8 @@ public class CoffeeMachine : MonoBehaviour
     [SerializeField] private Animator coffeeAnimator;
     [SerializeField] private CleanCups cleanCupsSystem;
     [SerializeField] private GameObject cappuccino;
+    [SerializeField] private Vector3 leftSlotPosition;
+    [SerializeField] private Vector3 rightSlotPosition;
     private const float BREW_TIME = 8f;
     private class CupSlot
     {
@@ -68,6 +70,8 @@ public class CoffeeMachine : MonoBehaviour
     private void OnMouseDown()
     {
         Vector3 clickPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Debug.Log($"Click Position: {clickPosition}");
+        Debug.Log($"Coffee Machine Position: {transform.position}");
         int position;
         if (TryRemoveCup(clickPosition, out position))
         {
@@ -84,13 +88,13 @@ public class CoffeeMachine : MonoBehaviour
 
     public void AddCup(Vector3 position)
     {
-        int slotIndex = position.x < transform.position.x ? 0 : 1;
+        int slotIndex = (Vector3.Distance(position, leftSlotPosition) < Vector3.Distance(position, rightSlotPosition)) ? 0 : 1;
 
         if (!slots[slotIndex].isPresent)
         {
-            slots[slotIndex].StartBrewing(position);
+            slots[slotIndex].StartBrewing(slotIndex == 0 ? leftSlotPosition : rightSlotPosition);
             UpdateAnimation();
-            Debug.Log($"Added cup to slot {slotIndex} at position {position}");
+            Debug.Log($"Added cup to slot {slotIndex} at position {(slotIndex == 0 ? leftSlotPosition : rightSlotPosition)}");
         }
     }
 
