@@ -2,7 +2,6 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections;
 
-
 public class MenuFrame : MonoBehaviour
 {
     public float fadeDuration = 1f;
@@ -10,6 +9,7 @@ public class MenuFrame : MonoBehaviour
     private Texture2D fadeTexture;
     private float fadeAmount = 0f;
     private bool isFading = false;
+    private float targetFadeAmount;
 
     private void Start()
     {
@@ -45,8 +45,6 @@ public class MenuFrame : MonoBehaviour
         }
     }
 
-    private float targetFadeAmount;
-
     private IEnumerator StartFading(float startAlpha, float targetAlpha)
     {
         fadeAmount = startAlpha;
@@ -64,20 +62,25 @@ public class MenuFrame : MonoBehaviour
     {
         Application.Quit();
     }
+
     public void Endless()
     {
         DataManager.Instance.Endler = true; // Store data
         FadeOut();
+        ModeAudioManager.Instance.FadeOutMusicAndSwitchScene("Shop"); // Fade music and switch scene
     }
+
     private IEnumerator IntroDelay()
     {
         yield return new WaitForSeconds(2f);
         SceneManager.LoadSceneAsync("Shop");
     }
+
     public void Race()
     {
         Application.Quit();
     }
+
     public void QuitGame()
     {
         Application.Quit();

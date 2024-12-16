@@ -8,6 +8,7 @@ TagManager:
   - Sigma
   - Plates
   - CoffeeMachine
+  - Gamemode
   layers:
   - Default
   - TransparentFX

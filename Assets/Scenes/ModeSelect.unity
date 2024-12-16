@@ -1324,6 +1324,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d564a088c7074ca4d98a1c4eaa02963f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Endler: 0
 --- !u!1 &873534777
 GameObject:
   m_ObjectHideFlags: 0
@@ -1336,7 +1337,7 @@ GameObject:
   - component: {fileID: 873534779}
   m_Layer: 0
   m_Name: SceneManagement
-  m_TagString: Untagged
+  m_TagString: Gamemode
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2323,6 +2324,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   musicSource: {fileID: 195762270}
   background: {fileID: 8300000, guid: ee6ac330e78b012469c91ea9ede09257, type: 3}
+  fadeOutDuration: 2
 --- !u!4 &1822197061
 Transform:
   m_ObjectHideFlags: 0
