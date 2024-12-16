@@ -39,6 +39,7 @@ public class MainMenu : MonoBehaviour
                 if (fadeAmount == 1f)
                 {
                     SceneManager.LoadSceneAsync("ModeSelect");
+                    //SceneManager.LoadSceneAsync("Shop");
                 }
             }
         }

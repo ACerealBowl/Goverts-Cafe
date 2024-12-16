@@ -1,7 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Collections;
+
 
 public class MenuFrame : MonoBehaviour
 {
@@ -10,7 +10,6 @@ public class MenuFrame : MonoBehaviour
     private Texture2D fadeTexture;
     private float fadeAmount = 0f;
     private bool isFading = false;
-    private bool Endler = false;
 
     private void Start()
     {
@@ -40,8 +39,7 @@ public class MenuFrame : MonoBehaviour
                 isFading = false;
                 if (fadeAmount == 1f)
                 {
-                    if (Endler)
-                    SceneManager.LoadSceneAsync("Endless");
+                    StartCoroutine(IntroDelay());
                 }
             }
         }
@@ -68,8 +66,13 @@ public class MenuFrame : MonoBehaviour
     }
     public void Endless()
     {
-        Endler=true;
+        DataManager.Instance.Endler = true; // Store data
         FadeOut();
+    }
+    private IEnumerator IntroDelay()
+    {
+        yield return new WaitForSeconds(2f);
+        SceneManager.LoadSceneAsync("Shop");
     }
     public void Race()
     {
