@@ -9,6 +9,7 @@ TagManager:
   - Plates
   - CoffeeMachine
   - Gamemode
+  - bullet
   layers:
   - Default
   - TransparentFX
@@ -54,4 +55,7 @@ TagManager:
     locked: 0
   - name: Stuff
     uniqueID: 1567834547
+    locked: 0
+  - name: IMPORTANT Stuff
+    uniqueID: 1097911361
     locked: 0
