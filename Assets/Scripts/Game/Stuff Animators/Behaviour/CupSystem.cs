@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using TMPro;
 
 public class CupSystem : MonoBehaviour
 {
@@ -8,9 +9,11 @@ public class CupSystem : MonoBehaviour
     [SerializeField] private GameObject cupsHD;
     [SerializeField] private Animator cupsAnimator;
     [SerializeField] private CameraAnimator cameraAnimator;
+    [SerializeField] private Animator nrAnimator;
     public int dirtyCupsCount = 0;
     private const int MAX_CUPS = 20;
     private GameObject activeDirtyCup;
+    public TMP_Text numberText;
     public bool DeadCups => dirtyCupsCount >= MAX_CUPS;
     public bool HasNoCups => dirtyCupsCount <= 0;
 
@@ -49,6 +52,7 @@ public class CupSystem : MonoBehaviour
             int additionalCups = Random.Range(3, 7);
             dirtyCupsCount = Mathf.Min(dirtyCupsCount + additionalCups, MAX_CUPS);
             Debug.Log($"Added {additionalCups} dirty cups. Total: {dirtyCupsCount}");
+            numberText.text = dirtyCupsCount.ToString(); // Update the text i hope
             if (GetDishesMenuState())
                 cupsAnimator.SetTrigger("Show");
             UpdateCleanCupsVisibility();
@@ -79,6 +83,7 @@ public class CupSystem : MonoBehaviour
         {
             yield return new WaitForSeconds(30f);
             AddRandomCups();
+            UpdateCleanCupsVisibility();
         }
     }
 
@@ -87,6 +92,8 @@ public class CupSystem : MonoBehaviour
         if (activeDirtyCup != null)
         {
             dirtyCupsCount--;
+            numberText.text = dirtyCupsCount.ToString();
+            nrAnimator.SetTrigger("click");
             activeDirtyCup.SetActive(false);
             activeDirtyCup = null;
             UpdateCleanCupsVisibility();

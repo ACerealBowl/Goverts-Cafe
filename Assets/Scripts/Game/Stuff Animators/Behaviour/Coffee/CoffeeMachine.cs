@@ -9,7 +9,7 @@ public class CoffeeMachine : MonoBehaviour
     [SerializeField] private Vector3 leftSlotPosition;
     [SerializeField] private Vector3 rightSlotPosition;
     private const float BREW_TIME = 8f;
-    private class CupSlot
+    private class CupSlot //I turned off a bunch of log updates cause I got it to work some time ago #cleanyourconsole or something
     {
         public bool isPresent;
         public bool isFilled;
@@ -70,8 +70,8 @@ public class CoffeeMachine : MonoBehaviour
     private void OnMouseDown()
     {
         Vector3 clickPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        Debug.Log($"Click Position: {clickPosition}");
-        Debug.Log($"Coffee Machine Position: {transform.position}");
+        //Debug.Log($"Click Position: {clickPosition}");
+       // Debug.Log($"Coffee Machine Position: {transform.position}");
         int position;
         if (TryRemoveCup(clickPosition, out position))
         {
@@ -112,7 +112,7 @@ public class CoffeeMachine : MonoBehaviour
             if (cappuccino != null)
             {
                 cappuccino.SetActive(true);
-                Debug.Log($"Cappuccino activated after cup removal from slot {position}!");
+                //Debug.Log($"Cappuccino activated after cup removal from slot {position}!");
             }
             else
             {
@@ -141,7 +141,7 @@ public class CoffeeMachine : MonoBehaviour
         coffeeAnimator.ResetTrigger("BothCupsEmpty");
 
         string triggerName = DetermineAnimationState();
-        Debug.Log($"Setting animation trigger: {triggerName}");
+        //Debug.Log($"Setting animation trigger: {triggerName}");
         coffeeAnimator.SetTrigger(triggerName);
     }
 

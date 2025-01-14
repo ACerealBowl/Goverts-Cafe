@@ -24,9 +24,7 @@ public class CameraAnimator : MonoBehaviour
     {
         StartCoroutine(HidePlates());
         Platorz.SetTrigger("idle");
-        CoffeeAnimator.SetTrigger("Hidden");
-
-        // Ensure cups are hidden at start
+        CoffeeAnimator.SetTrigger("Hidden"); // Make sure cups are hidden at start
         yield return new WaitForSeconds(0.1f); // Small delay to ensure animation system is ready
         StartCoroutine(HideCupsSigma());
         DishesMenu = false;
