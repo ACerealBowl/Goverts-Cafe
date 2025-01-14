@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using TMPro;
+using TMPro.Examples;
 
 public class CupSystem : MonoBehaviour
 {
@@ -17,7 +18,7 @@ public class CupSystem : MonoBehaviour
     public bool DeadCups => dirtyCupsCount >= MAX_CUPS;
     public bool HasNoCups => dirtyCupsCount <= 0;
 
-    private void Start()
+    public void Start()
     {
         if (cup != null)
             cup.SetActive(false);
@@ -53,7 +54,7 @@ public class CupSystem : MonoBehaviour
             dirtyCupsCount = Mathf.Min(dirtyCupsCount + additionalCups, MAX_CUPS);
             Debug.Log($"Added {additionalCups} dirty cups. Total: {dirtyCupsCount}");
             numberText.text = dirtyCupsCount.ToString(); // Update the text i hope
-            if (GetDishesMenuState())
+            if (GetDishesMenuState( ))
                 cupsAnimator.SetTrigger("Show");
             UpdateCleanCupsVisibility();
         }
@@ -63,7 +64,19 @@ public class CupSystem : MonoBehaviour
         return cameraAnimator.DishesMenu;
     }
 
-    private void UpdateCleanCupsVisibility()
+    public void fixRetard()
+    {
+        if (GetDishesMenuState())
+            Debug.Log($"NIGGER");
+        else
+        {
+            cupsAnimator.SetTrigger("Hide");
+            StartCoroutine(UpdateRequiredCupsRoutine());
+        }
+
+        }
+
+    public void UpdateCleanCupsVisibility()
     {
         if (cupsHD != null)
             cupsHD.SetActive(!DeadCups);
