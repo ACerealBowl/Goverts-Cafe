@@ -3102,7 +3102,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_RaycastPadding: {x: 0, y: 0, z: 24.13, w: 20.74}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -4586,8 +4586,8 @@ RectTransform:
   - {fileID: 1668001580}
   - {fileID: 526612837}
   - {fileID: 880269545}
-  - {fileID: 1625840467}
   - {fileID: 2002933644}
+  - {fileID: 1625840467}
   - {fileID: 218229044}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
