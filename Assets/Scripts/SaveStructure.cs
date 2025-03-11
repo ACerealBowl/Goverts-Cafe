@@ -4,11 +4,11 @@ using UnityEngine;
 
 public static class SaveStructure
 {
-    public static void SavePlayer(Player player)
+    public static void SavePlayer(Player player) //save
     {
-        BinaryFormatter formatter = new BinaryFormatter();
-        string path = Application.persistentDataPath + "/player.govert";
-        FileStream stream = new FileStream(path, FileMode.Create);
+        BinaryFormatter formatter = new BinaryFormatter(); 
+        string path = Application.persistentDataPath + "/player.govert"; //path
+        FileStream stream = new FileStream(path, FileMode.Create); //notice create
 
         PlayerData data = new PlayerData(player);
 
@@ -17,14 +17,14 @@ public static class SaveStructure
         Debug.Log("saved" + path);
     }
 
-    public static PlayerData LoadPlayer()
+    public static PlayerData LoadPlayer() //load
     {
         string path = Application.persistentDataPath + "/player.govert";
         if (File.Exists(path))
         {
             BinaryFormatter formatter = new BinaryFormatter();
-            FileStream stream = new FileStream(path, FileMode.Open);
-            PlayerData data = formatter.Deserialize(stream) as PlayerData;
+            FileStream stream = new FileStream(path, FileMode.Open); //notice open, its like ifstream honestly.
+            PlayerData data = formatter.Deserialize(stream) as PlayerData; 
             stream.Close();
 
             return data;
