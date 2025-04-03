@@ -10,6 +10,7 @@ public class CameraAnimator : MonoBehaviour
     public Animator Platorz;
     public Animator cupsAnimator;
     public Animator CoffeeAnimator;
+    public Animator PastryAnimator;
     public bool DishesMenu = false;
     [SerializeField] private CupSystem cupSystem;
 
@@ -44,6 +45,10 @@ public class CameraAnimator : MonoBehaviour
     {
         StartCoroutine (hideCoffee());
     }
+    public void HidePastry()
+    {
+        StartCoroutine(hidePastry());
+    }
 
     private IEnumerator ShowPlates()
     {
@@ -57,6 +62,11 @@ public class CameraAnimator : MonoBehaviour
     {
         yield return new WaitForSeconds(0.5f);
         CoffeeAnimator.SetTrigger("Hidden");
+    }
+    private IEnumerator hidePastry()
+    {
+        yield return new WaitForSeconds(0.5f);
+        PastryAnimator.SetTrigger("Hidden");
     }
 
     public IEnumerator HidePlates()
@@ -77,6 +87,12 @@ public class CameraAnimator : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         CoffeeAnimator.SetTrigger("idle");
     }
+    private IEnumerator ShowPastry()
+    {
+        yield return new WaitForSeconds(0.5f);
+        PastryAnimator.SetTrigger("idle");
+    }
+
     private IEnumerator ShowCupsSigma()
     {
         yield return new WaitForSeconds(0.5f);
@@ -110,6 +126,7 @@ public class CameraAnimator : MonoBehaviour
     public void PlayPastryAnimation()
     {
         StartCoroutine(AnimationSequence("PastryView"));
+        StartCoroutine(ShowPastry());
         StartCoroutine(ShowPlates());
         Platorz.SetTrigger("Pastry");
     }

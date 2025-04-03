@@ -2,10 +2,26 @@ using UnityEngine;
 
 public class FilledCup : MonoBehaviour
 {
+    private PlateSystem plateSystem;
+    private int cupPosition;
+    private bool isBeingHeld = true;
+
+    private void Start()
+    {
+        // Find the plate system in the scene
+        plateSystem = FindObjectOfType<PlateSystem>();
+
+        // Register with the plate system
+        if (plateSystem != null)
+        {
+            plateSystem.RegisterNewItem(gameObject, "Coffee", cupPosition);
+        }
+    }
+
     private void Update()
     {
-        // Only update position if the object is active
-        if (gameObject.activeSelf)
+        // Only update position if the object is active and being held
+        if (gameObject.activeSelf && isBeingHeld)
         {
             FollowMouse();
         }
@@ -23,7 +39,19 @@ public class FilledCup : MonoBehaviour
 
     public void SetCupPosition(int position)
     {
-        // Optional: Additional logic if you need to set specific positions
+        cupPosition = position;
         Debug.Log($"Cup position set to {position}");
+    }
+
+    // Called when the cup is placed on a plate
+    public void SetPlaced()
+    {
+        isBeingHeld = false;
+    }
+
+    // Called when the cup is picked up from a plate
+    public void SetHeld()
+    {
+        isBeingHeld = true;
     }
 }

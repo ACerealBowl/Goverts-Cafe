@@ -6,22 +6,20 @@ using UnityEngine.UI;
 public class Pastry : MonoBehaviour
 {
     [SerializeField] private SpriteRenderer spriteRenderer;
-    [SerializeField] private GameObject cake;  // This will be our single cake instance
+    [SerializeField] private GameObject pastryPrefab;  // Changed from cake to pastryPrefab
     [SerializeField] private Sprite[] pastrySprites;
+    [SerializeField] private string[] pastryTypes = { "Cake", "Donut", "Tiramisu", "Muffin" };
     [SerializeField] private GameObject selectionMenu;
     [SerializeField] private Button[] selectionButtons;
-    [SerializeField] private Button exitButton;
     [SerializeField] private Animator menuAnimator;
+    [SerializeField] private PlateSystem plateSystem;
 
     private bool isMenuOpen = false;
-    private static bool isItemActive = false;  // Similar to CupSystem's pattern
+    private GameObject currentPastry = null;  // Track the current pastry being created
+    private int currentSpriteIndex = 0;
 
     private void Start()
     {
-        // Initialize cake as inactive, like in CupSystem
-        if (cake != null)
-            cake.SetActive(false);
-
         if (selectionMenu != null)
         {
             selectionMenu.SetActive(false);
@@ -36,10 +34,16 @@ public class Pastry : MonoBehaviour
                 selectionButtons[i].onClick.AddListener(() => SelectPastry(buttonIndex));
             }
         }
+    }
 
-        if (exitButton != null)
+    private void Update()
+    {
+        // Make the current pastry follow the mouse if it exists
+        if (currentPastry != null && currentPastry.activeSelf)
         {
-            exitButton.onClick.AddListener(ExitAndDestroy);
+            Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            mousePosition.z = 0f;
+            currentPastry.transform.position = mousePosition;
         }
     }
 
@@ -52,79 +56,72 @@ public class Pastry : MonoBehaviour
         }
     }
 
-    private void Update()
-    {
-        // Update cake position when active, similar to CupSystem's Update
-        if (cake != null && cake.activeSelf)
-        {
-            Vector3 mousePos = Input.mousePosition;
-            mousePos.z = -Camera.main.transform.position.z;
-            cake.transform.position = Camera.main.ScreenToWorldPoint(mousePos);
-
-            // Right-click to deactivate
-            if (Input.GetMouseButtonDown(1))
-            {
-                DeactivateCake();
-            }
-        }
-    }
-
     private void OnMouseDown()
     {
-        // Only show menu if no cake is active and menu isn't open
-        if (gameObject.activeSelf && !isItemActive && !isMenuOpen)
+        // Only show menu if no pastry is currently being created and menu isn't open
+        if (gameObject.activeSelf && currentPastry == null && !isMenuOpen)
         {
             CenterMenu();
             selectionMenu.SetActive(true);
             menuAnimator.SetTrigger("open");
             isMenuOpen = true;
+            Debug.Log("Opening pastry menu");
+        }
+        else
+        {
+            Debug.Log("Cannot open menu: currentPastry=" + (currentPastry != null ? "exists" : "null") + ", isMenuOpen=" + isMenuOpen);
         }
     }
 
     private void SelectPastry(int index)
     {
-        if (!isItemActive && cake != null)
+        Debug.Log("SelectPastry called with index: " + index);
+
+        // Create a new instance of the pastry prefab
+        if (pastryPrefab != null)
         {
-            if (spriteRenderer != null && pastrySprites != null && index < pastrySprites.Length)
+            // Instantiate a new pastry object
+            currentPastry = Instantiate(pastryPrefab, transform);
+            currentSpriteIndex = index;
+
+            // Set the sprite for the new pastry
+            SpriteRenderer pastrySpriteRenderer = currentPastry.GetComponent<SpriteRenderer>();
+            if (pastrySpriteRenderer != null && pastrySprites != null && index < pastrySprites.Length)
             {
-                spriteRenderer.sprite = pastrySprites[index];
+                pastrySpriteRenderer.sprite = pastrySprites[index];
             }
 
-            // Activate and position the cake
-            cake.SetActive(true);
-            isItemActive = true;
-
+            // Position at mouse
             Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             mousePosition.z = 0f;
-            cake.transform.position = mousePosition;
+            currentPastry.transform.position = mousePosition;
+            currentPastry.SetActive(true);
+
+            // Register with the plate system
+            if (plateSystem != null && index < pastryTypes.Length)
+            {
+                plateSystem.RegisterNewItem(currentPastry, pastryTypes[index], index);
+                Debug.Log("Registered new item with PlateSystem: " + pastryTypes[index]);
+            }
+            else
+            {
+                Debug.LogError("PlateSystem is null or index out of range!");
+            }
+        }
+        else
+        {
+            Debug.LogError("Pastry prefab is not assigned!");
         }
 
         selectionMenu.SetActive(false);
         isMenuOpen = false;
     }
 
-    private void DeactivateCake()
+    // Called when the pastry is placed on a plate or discarded
+    public void ResetPastrySystem()
     {
-        if (cake != null)
-        {
-            cake.SetActive(false);
-            isItemActive = false;
-        }
-    }
-
-    public void ExitAndDestroy()
-    {
-        DeactivateCake();
-
-        if (selectionMenu != null)
-        {
-            selectionMenu.SetActive(false);
-            isMenuOpen = false;
-        }
-    }
-
-    private void OnDisable()
-    {
-        DeactivateCake();
+        // Just clear the reference - don't destroy the object as PlateSystem handles that
+        currentPastry = null;
+        Debug.Log("Pastry system reset");
     }
 }

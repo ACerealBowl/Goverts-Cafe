@@ -132,6 +132,8 @@ GameObject:
   m_Component:
   - component: {fileID: 21562640}
   - component: {fileID: 21562641}
+  - component: {fileID: 21562643}
+  - component: {fileID: 21562642}
   m_Layer: 0
   m_Name: Leftplate
   m_TagString: Untagged
@@ -206,6 +208,54 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!70 &21562642
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 21562639}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.00006318092, y: 0.00002360344}
+  m_Size: {x: 3.86, y: 1.42}
+  m_Direction: 1
+--- !u!114 &21562643
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 21562639}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78629ce99dd886042b185c0977958682, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  plateSystem: {fileID: 811782067}
 --- !u!1 &33316409
 GameObject:
   m_ObjectHideFlags: 0
@@ -951,7 +1001,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &526612837
 Transform:
   m_ObjectHideFlags: 0
@@ -1359,6 +1409,8 @@ GameObject:
   m_Component:
   - component: {fileID: 552450539}
   - component: {fileID: 552450540}
+  - component: {fileID: 552450542}
+  - component: {fileID: 552450541}
   m_Layer: 0
   m_Name: Rightplate
   m_TagString: Untagged
@@ -1433,6 +1485,54 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!70 &552450541
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 552450538}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.000074863434, y: 0.00002360344}
+  m_Size: {x: 3.86, y: 1.42}
+  m_Direction: 1
+--- !u!114 &552450542
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 552450538}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78629ce99dd886042b185c0977958682, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  plateSystem: {fileID: 811782067}
 --- !u!1 &578142646
 GameObject:
   m_ObjectHideFlags: 0
@@ -1762,9 +1862,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 735867300}
-        m_TargetAssemblyTypeName: Pastry, Assembly-CSharp
-        m_MethodName: ExitAndDestroy
+      - m_Target: {fileID: 2131373637}
+        m_TargetAssemblyTypeName: CameraAnimator, Assembly-CSharp
+        m_MethodName: HidePastry
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2158,6 +2258,7 @@ GameObject:
   - component: {fileID: 735867299}
   - component: {fileID: 735867300}
   - component: {fileID: 735867301}
+  - component: {fileID: 735867302}
   m_Layer: 0
   m_Name: Pastry
   m_TagString: Untagged
@@ -2174,11 +2275,11 @@ Transform:
   m_GameObject: {fileID: 735867297}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -3.58, y: 0.62, z: 3.0125008}
+  m_LocalPosition: {x: 1, y: -539.3651, z: 0}
   m_LocalScale: {x: 0.88, y: 0.88, z: 0.88}
   m_ConstrainProportionsScale: 1
   m_Children: []
-  m_Father: {fileID: 2002933644}
+  m_Father: {fileID: 1287446825}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &735867299
 SpriteRenderer:
@@ -2245,20 +2346,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spriteRenderer: {fileID: 756945766}
-  cake: {fileID: 756945764}
+  pastryPrefab: {fileID: 756945764}
   pastrySprites:
   - {fileID: 21300000, guid: ed6ed9ecce2890343b64cfb3b377f19a, type: 3}
   - {fileID: 21300000, guid: 5bfebdd6ab4c25b41a14521b3a6f92c5, type: 3}
   - {fileID: 21300000, guid: f4c3c962aa017364ea69ae07432a04cb, type: 3}
   - {fileID: 21300000, guid: 9b8bc3e41bd100e4dbceae376b61d463, type: 3}
+  pastryTypes:
+  - Cake
+  - Donut
+  - Tiramisu
+  - Muffin
   selectionMenu: {fileID: 1575389138}
   selectionButtons:
   - {fileID: 606030280}
   - {fileID: 2093390655}
   - {fileID: 625657831}
   - {fileID: 171036404}
-  exitButton: {fileID: 0}
   menuAnimator: {fileID: 1575389142}
+  plateSystem: {fileID: 811782067}
 --- !u!70 &735867301
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -2294,6 +2400,27 @@ CapsuleCollider2D:
   m_Offset: {x: 0.0000834465, y: 0.00002771616}
   m_Size: {x: 8.63, y: 8.01}
   m_Direction: 0
+--- !u!95 &735867302
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 735867297}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 93e008af142822e45a91d61358dfba0b, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &756945764
 GameObject:
   m_ObjectHideFlags: 0
@@ -2389,6 +2516,8 @@ GameObject:
   - component: {fileID: 811782062}
   - component: {fileID: 811782064}
   - component: {fileID: 811782065}
+  - component: {fileID: 811782067}
+  - component: {fileID: 811782066}
   m_Layer: 0
   m_Name: globalPlates
   m_TagString: Plates
@@ -2448,6 +2577,59 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7339a86c02c87ff41adc4ad902d1dc48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!70 &811782066
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 811782061}
+  m_Enabled: 0
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 5.3133173, y: -2.787456}
+  m_Size: {x: 7.287159, y: 2.8716652}
+  m_Direction: 1
+--- !u!114 &811782067
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 811782061}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64a0722fd14434e47b569745fc2c9f4e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  plates:
+  - {fileID: 21562640}
+  - {fileID: 552450539}
+  - {fileID: 1616059257}
+  plateRadius: 0.93
+  pastrySystem: {fileID: 0}
 --- !u!1 &868720056
 GameObject:
   m_ObjectHideFlags: 0
@@ -2951,7 +3133,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1007628881
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3102,7 +3284,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 24.13, w: 20.74}
+  m_RaycastPadding: {x: 0, y: 0, z: 24.13, w: 19.2}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -4598,6 +4780,7 @@ RectTransform:
   - {fileID: 45955271}
   - {fileID: 811782062}
   - {fileID: 1047981240}
+  - {fileID: 735867298}
   - {fileID: 1668001580}
   - {fileID: 526612837}
   - {fileID: 880269545}
@@ -5513,6 +5696,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1616059257}
   - component: {fileID: 1616059258}
+  - component: {fileID: 1616059260}
+  - component: {fileID: 1616059259}
   m_Layer: 0
   m_Name: Topplate
   m_TagString: Untagged
@@ -5587,6 +5772,54 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!70 &1616059259
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1616059256}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.0001077652, y: 0.00003671646}
+  m_Size: {x: 3.86, y: 1.42}
+  m_Direction: 1
+--- !u!114 &1616059260
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1616059256}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78629ce99dd886042b185c0977958682, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  plateSystem: {fileID: 811782067}
 --- !u!1 &1625840466
 GameObject:
   m_ObjectHideFlags: 0
@@ -5602,7 +5835,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1625840467
 Transform:
   m_ObjectHideFlags: 0
@@ -6319,7 +6552,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1792097756
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6909,7 +7142,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1567834547
   m_SortingLayer: 3
-  m_SortingOrder: 1
+  m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: f3c49efd9ed858c4b9b50e3144c6f765, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -7035,7 +7268,6 @@ Transform:
   m_Children:
   - {fileID: 606542243}
   - {fileID: 33316410}
-  - {fileID: 735867298}
   - {fileID: 756945765}
   - {fileID: 1575389139}
   m_Father: {fileID: 1287446825}
@@ -8045,6 +8277,7 @@ MonoBehaviour:
   Platorz: {fileID: 811782064}
   cupsAnimator: {fileID: 1668001584}
   CoffeeAnimator: {fileID: 1047981241}
+  PastryAnimator: {fileID: 735867302}
   DishesMenu: 0
   cupSystem: {fileID: 1668001582}
 --- !u!1660057539 &9223372036854775807
