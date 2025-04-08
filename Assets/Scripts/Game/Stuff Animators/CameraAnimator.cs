@@ -204,7 +204,7 @@ public class CameraAnimator : MonoBehaviour
         IsPastryViewActive = false;
     }
 
-   public void PlayCoffeeAnimation()
+    public void PlayCoffeeAnimation()
     {
         StartCoroutine(AnimationSequence("CoffeeView"));
         StartCoroutine(ShowPlates());
@@ -245,7 +245,7 @@ public class CameraAnimator : MonoBehaviour
     // New method to scale all pastries (both placed and unplaced)
     private void ScaleAllPastries(float scale)
     {
-       
+
 
         // Scale placed pastries through GameManager
         if (GameManager.Instance != null)
