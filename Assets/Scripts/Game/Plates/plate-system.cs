@@ -4,8 +4,8 @@ using UnityEngine;
 public class PlateSystem : MonoBehaviour
 {
     [SerializeField] private Transform[] plates;
-    [SerializeField] private float plateRadius = 1.0f;
-    [SerializeField] private Pastry pastrySystem;
+    [SerializeField] private float plateRadius = 1.0f; // Adjust based on your plate size
+    [SerializeField] private Pastry pastrySystem; // Reference to the Pastry script
 
     private GameObject currentPickedItem = null;
     private string currentItemType = "";
@@ -13,140 +13,88 @@ public class PlateSystem : MonoBehaviour
 
     private void Start()
     {
-        InitializePlateIdentifiers();
-        FindPastrySystemIfNull();
-    }
-
-    private void InitializePlateIdentifiers()
-    {
-        for (int i = 0; i < plates.Length; i++)
-        {
-            PlateIdentifier identifier = plates[i].GetComponent<PlateIdentifier>();
-            if (identifier == null)
-            {
-                identifier = plates[i].gameObject.AddComponent<PlateIdentifier>();
-            }
-
-            if (identifier.GetPlateIdAsInt() <= 0)
-            {
-                identifier.SetPlateId((i + 1).ToString());
-                Debug.Log($"Set plate {i} ID to {i + 1}");
-            }
-        }
-    }
-
-    private void FindPastrySystemIfNull()
-    {
+        // Find the pastry system if not assigned
         if (pastrySystem == null)
         {
             pastrySystem = FindObjectOfType<Pastry>();
+        }
+
+        // Ensure all plates have PlateIdentifier
+        foreach (Transform plate in plates)
+        {
+            if (plate.GetComponent<PlateIdentifier>() == null)
+            {
+                plate.gameObject.AddComponent<PlateIdentifier>();
+            }
         }
     }
 
     private void Update()
     {
-        HandleRightClick();
-        HandleLeftClick();
-        UpdateHeldItemPosition();
-    }
-
-    private void HandleRightClick()
-    {
+        // Right-click to discard the current item or remove item from plate
         if (Input.GetMouseButtonDown(1))
         {
             if (currentPickedItem != null)
             {
+                // Discard item being held
                 DiscardCurrentItem();
                 return;
             }
-
-            Vector3 mousePosition = GetMouseWorldPosition();
-            Transform plateUnderMouse = GetPlateUnderMouse(mousePosition);
-
-            if (plateUnderMouse != null)
+            else
             {
-                PlateController plateController = plateUnderMouse.GetComponent<PlateController>();
-                plateController?.HandlePlateRightClick(mousePosition);
-            }
-        }
-    }
+                // Try to remove an item from a plate via right-click
+                Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                mousePosition.z = 0f;
 
-    private void HandleLeftClick()
-    {
-        if (!Input.GetMouseButtonDown(0)) return;
-
-        Vector3 mousePosition = GetMouseWorldPosition();
-
-        if (currentPickedItem != null)
-        {
-            HandleItemPlacement(mousePosition);
-            return;
-        }
-
-        TryPickUpItem(mousePosition);
-    }
-
-    private void HandleItemPlacement(Vector3 mousePosition)
-    {
-        Transform targetPlate = GetPlateUnderMouse(mousePosition);
-        if (targetPlate != null)
-        {
-            // Prevent placing pastries in non-pastry views
-            if (IsPastryType(currentItemType) && !CameraAnimator.Instance.IsPastryViewActive)
-            {
-                DiscardCurrentItem();
-                return;
-            }
-            PlaceItemOnPlate(targetPlate.gameObject, mousePosition);
-        }
-    }
-
-    private void TryPickUpItem(Vector3 mousePosition)
-    {
-        GameObject itemToPickUp = GetItemUnderMouse(mousePosition);
-        if (itemToPickUp != null)
-        {
-            // Prevent picking up pastries in non-pastry views
-            if (IsPastryItem(itemToPickUp) && !CameraAnimator.Instance.IsPastryViewActive)
-            {
-                Debug.Log("Can't interact with pastries in this view");
-                return;
-            }
-            PickUpExistingItem(itemToPickUp, mousePosition);
-        }
-    }
-
-    private bool IsPastryItem(GameObject item)
-    {
-        foreach (Transform plate in plates)
-        {
-            var itemsOnPlate = GameManager.Instance.GetItemsOnPlate(plate.gameObject);
-            foreach (var itemData in itemsOnPlate)
-            {
-                if (itemData.itemObject == item && IsPastryType(itemData.itemType))
+                // Check if we clicked on a plate
+                Transform plateUnderMouse = GetPlateUnderMouse(mousePosition);
+                if (plateUnderMouse != null)
                 {
-                    return true;
+                    // Forward to plate controller
+                    PlateController plateController = plateUnderMouse.GetComponent<PlateController>();
+                    if (plateController != null)
+                    {
+                        plateController.HandlePlateRightClick(mousePosition);
+                    }
                 }
             }
         }
-        return false;
-    }
 
-    private void UpdateHeldItemPosition()
-    {
+        // Left-click to place or pick up an item
+        if (Input.GetMouseButtonDown(0))
+        {
+            Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            mousePosition.z = 0f;
+
+            // If we have an item picked up, try to place it
+            if (currentPickedItem != null)
+            {
+                Transform targetPlate = GetPlateUnderMouse(mousePosition);
+                if (targetPlate != null)
+                {
+                    PlaceItemOnPlate(targetPlate.gameObject, mousePosition);
+                }
+                return;
+            }
+
+            // If we don't have an item, try to pick one up from a plate
+            GameObject itemToPickUp = GetItemUnderMouse(mousePosition);
+            if (itemToPickUp != null)
+            {
+                PickUpExistingItem(itemToPickUp, mousePosition);
+            }
+        }
+
+        // Update position of picked item
         if (currentPickedItem != null)
         {
-            currentPickedItem.transform.position = GetMouseWorldPosition();
+            Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            mousePos.z = 0f;
+            currentPickedItem.transform.position = mousePos;
         }
     }
 
-    private Vector3 GetMouseWorldPosition()
-    {
-        Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        mousePos.z = 0f;
-        return mousePos;
-    }
-
+    // Find a plate under the mouse position
     public Transform GetPlateUnderMouse(Vector3 mousePosition)
     {
         foreach (Transform plate in plates)
@@ -160,8 +108,10 @@ public class PlateSystem : MonoBehaviour
         return null;
     }
 
+    // Find an already placed item under the mouse
     private GameObject GetItemUnderMouse(Vector3 mousePosition)
     {
+        // Check all plates for items
         foreach (Transform plate in plates)
         {
             List<GameManager.PlacedItemData> itemsOnPlate =
@@ -179,8 +129,10 @@ public class PlateSystem : MonoBehaviour
         return null;
     }
 
+    // Pick up an item that was already placed on a plate
     private void PickUpExistingItem(GameObject item, Vector3 position)
     {
+        // Find which plate this item belongs to
         foreach (Transform plate in plates)
         {
             List<GameManager.PlacedItemData> itemsOnPlate =
@@ -190,53 +142,67 @@ public class PlateSystem : MonoBehaviour
             {
                 if (itemData.itemObject == item)
                 {
+                    // Store the item data
                     currentPickedItem = item;
                     currentItemType = itemData.itemType;
                     currentSpriteIndex = itemData.spriteIndex;
 
+                    // Remove from plate tracking
                     GameManager.Instance.RemoveItemFromPlate(item, plate.gameObject);
 
+                    // If it's a coffee cup, notify it
                     FilledCup filledCup = item.GetComponent<FilledCup>();
-                    filledCup?.SetHeld();
+                    if (filledCup != null)
+                    {
+                        filledCup.SetHeld();
+                    }
 
-                    Debug.Log($"Picked up {currentItemType} from plate {plate.GetComponent<PlateIdentifier>().GetPlateId()}");
+                    Debug.Log($"Picked up {currentItemType} from plate");
                     return;
                 }
             }
         }
     }
 
+    // Place the current item on a plate
     private void PlaceItemOnPlate(GameObject plate, Vector3 position)
     {
-        currentPickedItem.transform.position = position;
-
-        PlateIdentifier plateIdentifier = plate.GetComponent<PlateIdentifier>();
-        if (plateIdentifier != null)
+        if (currentPickedItem != null)
         {
-            plateIdentifier.RegisterItemPosition(currentPickedItem);
+            // Set the final position
+            currentPickedItem.transform.position = position;
+
+            // Add to GameManager tracking
+            GameManager.Instance.AddItemToPlate(currentPickedItem, plate, currentItemType, currentSpriteIndex);
+
+            // Notify coffee cup if applicable
+            FilledCup filledCup = currentPickedItem.GetComponent<FilledCup>();
+            if (filledCup != null)
+            {
+                filledCup.SetPlaced();
+            }
+
+            // Reset the pastry system if this was a pastry item
+            if (IsPastryType(currentItemType) && pastrySystem != null)
+            {
+                pastrySystem.ResetPastrySystem();
+            }
+
+            // Reset current item
+            currentPickedItem = null;
+            currentItemType = "";
+            currentSpriteIndex = -1;
+
+            Debug.Log("Placed item on plate");
         }
-
-        GameManager.Instance.AddItemToPlate(currentPickedItem, plate, currentItemType, currentSpriteIndex);
-
-        FilledCup filledCup = currentPickedItem.GetComponent<FilledCup>();
-        filledCup?.SetPlaced();
-
-        if (IsPastryType(currentItemType) && pastrySystem != null)
-        {
-            pastrySystem.ResetPastrySystem();
-        }
-
-        Debug.Log($"Placed {currentItemType} on plate {plateIdentifier.GetPlateId()}");
-
-        currentPickedItem = null;
-        currentItemType = "";
-        currentSpriteIndex = -1;
     }
 
+    // Discard the current item being held
     private void DiscardCurrentItem()
     {
         if (currentPickedItem != null)
         {
+            // Reset the pastry system if this was a pastry item
             if (IsPastryType(currentItemType) && pastrySystem != null)
             {
                 pastrySystem.ResetPastrySystem();
@@ -250,19 +216,23 @@ public class PlateSystem : MonoBehaviour
         }
     }
 
+    // Check if an item type is a pastry
     private bool IsPastryType(string itemType)
     {
         return itemType == "Cake" || itemType == "Donut" ||
                itemType == "Tiramisu" || itemType == "Muffin";
     }
 
+    // This method should be called by other scripts (like Pastry) when an item is created
     public void RegisterNewItem(GameObject item, string itemType, int spriteIndex)
     {
+        // If we're already holding something, discard it
         if (currentPickedItem != null)
         {
             DiscardCurrentItem();
         }
 
+        // Set the new item
         currentPickedItem = item;
         currentItemType = itemType;
         currentSpriteIndex = spriteIndex;

@@ -6,24 +6,23 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
 
+    // Dictionary to track what's on each plate - plate ID as key
     private Dictionary<string, List<PlacedItemData>> plateContents = new Dictionary<string, List<PlacedItemData>>();
 
     [System.Serializable]
     public class PlacedItemData
     {
-        public string itemType;
-        public int spriteIndex;
+        public string itemType; // e.g., "cake", "coffee", "donut", "tiramisu", "muffin"
+        public int spriteIndex; // Which sprite variant was used (for pastries)
         public Vector3 position;
-        public GameObject itemObject;
-        public Vector3 localPosition;
+        public GameObject itemObject; // Reference to the actual GameObject
 
-        public PlacedItemData(string type, int spriteIndex, Vector3 pos, GameObject obj, Vector3 localPos)
+        public PlacedItemData(string type, int spriteIndex, Vector3 pos, GameObject obj)
         {
             itemType = type;
             this.spriteIndex = spriteIndex;
             position = pos;
             itemObject = obj;
-            localPosition = localPos;
         }
     }
 
@@ -40,8 +39,10 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    // Add an item to a plate and track it
     public void AddItemToPlate(GameObject item, GameObject plate, string itemType, int spriteIndex)
     {
+        // Get the plate identifier component
         PlateIdentifier plateIdentifier = plate.GetComponent<PlateIdentifier>();
         if (plateIdentifier == null)
         {
@@ -51,26 +52,23 @@ public class GameManager : MonoBehaviour
 
         string plateId = plateIdentifier.GetPlateId();
 
+        // Initialize the list for this plate if it doesn't exist
         if (!plateContents.ContainsKey(plateId))
         {
             plateContents[plateId] = new List<PlacedItemData>();
         }
 
-        Vector3 localPosition = item.transform.position - plate.transform.position;
-        PlacedItemData data = new PlacedItemData(itemType, spriteIndex, item.transform.position, item, localPosition);
+        // Create and store the item data
+        PlacedItemData data = new PlacedItemData(itemType, spriteIndex, item.transform.position, item);
         plateContents[plateId].Add(data);
-
-        Renderer itemRenderer = item.GetComponent<Renderer>();
-        if (itemRenderer != null && !plateIdentifier.IsVisible())
-        {
-            itemRenderer.enabled = false;
-        }
 
         Debug.Log($"Added {itemType} (sprite: {spriteIndex}) to plate {plateId}");
     }
 
+    // Remove an item from a plate
     public void RemoveItemFromPlate(GameObject item, GameObject plate)
     {
+        // Get the plate identifier component
         PlateIdentifier plateIdentifier = plate.GetComponent<PlateIdentifier>();
         if (plateIdentifier == null)
         {
@@ -82,6 +80,7 @@ public class GameManager : MonoBehaviour
 
         if (plateContents.ContainsKey(plateId))
         {
+            // Find the exact item in our data
             PlacedItemData itemToRemove = null;
             foreach (var placedItem in plateContents[plateId])
             {
@@ -100,8 +99,10 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    // Get all items on a specific plate
     public List<PlacedItemData> GetItemsOnPlate(GameObject plate)
     {
+        // Get the plate identifier component
         PlateIdentifier plateIdentifier = plate.GetComponent<PlateIdentifier>();
         if (plateIdentifier == null)
         {
@@ -118,13 +119,16 @@ public class GameManager : MonoBehaviour
         return new List<PlacedItemData>();
     }
 
+    // Get all plates and their contents
     public Dictionary<string, List<PlacedItemData>> GetAllPlateContents()
     {
         return plateContents;
     }
 
+    // Check if a specific plate has the given item type
     public bool PlateHasItemType(GameObject plate, string itemType)
     {
+        // Get the plate identifier component
         PlateIdentifier plateIdentifier = plate.GetComponent<PlateIdentifier>();
         if (plateIdentifier == null)
         {
@@ -145,38 +149,5 @@ public class GameManager : MonoBehaviour
             }
         }
         return false;
-    }
-
-    public void UpdateAllPlateItemPositions()
-    {
-        PlateIdentifier[] allPlates = FindObjectsOfType<PlateIdentifier>();
-        foreach (var plateIdentifier in allPlates)
-        {
-            plateIdentifier.UpdateItemPositions();
-        }
-    }
-
-    public void SetAllPlatesVisibility(bool visible)
-    {
-        PlateIdentifier[] allPlates = FindObjectsOfType<PlateIdentifier>();
-        foreach (var plateIdentifier in allPlates)
-        {
-            plateIdentifier.SetVisibility(visible);
-        }
-        Debug.Log($"Set visibility of all plates and pastries to {visible}");
-    }
-
-    public void SetPlateVisibility(int plateId, bool visible)
-    {
-        PlateIdentifier[] allPlates = FindObjectsOfType<PlateIdentifier>();
-        foreach (var plateIdentifier in allPlates)
-        {
-            if (plateIdentifier.GetPlateIdAsInt() == plateId)
-            {
-                plateIdentifier.SetVisibility(visible);
-                return;
-            }
-        }
-        Debug.LogWarning($"Plate with ID {plateId} not found for visibility change");
     }
 }

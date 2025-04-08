@@ -9,11 +9,7 @@ public class CoffeeMachine : MonoBehaviour
     [SerializeField] private Vector3 leftSlotPosition;
     [SerializeField] private Vector3 rightSlotPosition;
     private const float BREW_TIME = 8f;
-
-    [Header("Debug Settings")]
-    [SerializeField] private bool debugMode = true;
-
-    private class CupSlot
+    private class CupSlot //I turned off a bunch of log updates cause I got it to work some time ago #cleanyourconsole or something
     {
         public bool isPresent;
         public bool isFilled;
@@ -45,12 +41,6 @@ public class CoffeeMachine : MonoBehaviour
         {
             coffeeAnimator.SetTrigger("idle");
         }
-
-        if (debugMode)
-        {
-            Debug.Log("[CoffeeMachine] Started with left slot position: " + leftSlotPosition +
-                      " and right slot position: " + rightSlotPosition);
-        }
     }
 
     private void Update()
@@ -80,22 +70,12 @@ public class CoffeeMachine : MonoBehaviour
     private void OnMouseDown()
     {
         Vector3 clickPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        if (debugMode)
-        {
-            Debug.Log($"[CoffeeMachine] Click Position: {clickPosition}");
-            Debug.Log($"[CoffeeMachine] Coffee Machine Position: {transform.position}");
-        }
-
+        //Debug.Log($"Click Position: {clickPosition}");
+       // Debug.Log($"Coffee Machine Position: {transform.position}");
         int position;
         if (TryRemoveCup(clickPosition, out position))
         {
-            Debug.Log($"[CoffeeMachine] Successfully removed cup from slot {position}");
-        }
-        else if (debugMode)
-        {
-            // Debug why removal failed
-            Debug.Log($"[CoffeeMachine] Cup removal failed. Slot {position} status: " +
-                      $"isPresent={slots[position].isPresent}, isFilled={slots[position].isFilled}");
+            Debug.Log($"Successfully removed cup from slot {position}");
         }
     }
 
@@ -103,14 +83,6 @@ public class CoffeeMachine : MonoBehaviour
     {
         Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         int slotIndex = mousePos.x < transform.position.x ? 0 : 1;
-
-        if (debugMode)
-        {
-            Debug.Log($"[CoffeeMachine] CanAcceptCup check: Mouse position {mousePos}, " +
-                      $"machine position {transform.position}, slot {slotIndex}, " +
-                      $"result: {!slots[slotIndex].isPresent}");
-        }
-
         return !slots[slotIndex].isPresent;
     }
 
@@ -118,35 +90,17 @@ public class CoffeeMachine : MonoBehaviour
     {
         int slotIndex = (Vector3.Distance(position, leftSlotPosition) < Vector3.Distance(position, rightSlotPosition)) ? 0 : 1;
 
-        if (debugMode)
-        {
-            Debug.Log($"[CoffeeMachine] AddCup attempt at position {position}, " +
-                      $"distance to left: {Vector3.Distance(position, leftSlotPosition)}, " +
-                      $"distance to right: {Vector3.Distance(position, rightSlotPosition)}, " +
-                      $"selected slot: {slotIndex}, slot available: {!slots[slotIndex].isPresent}");
-        }
-
         if (!slots[slotIndex].isPresent)
         {
             slots[slotIndex].StartBrewing(slotIndex == 0 ? leftSlotPosition : rightSlotPosition);
             UpdateAnimation();
-            Debug.Log($"[CoffeeMachine] Added cup to slot {slotIndex} at position {(slotIndex == 0 ? leftSlotPosition : rightSlotPosition)}");
-        }
-        else if (debugMode)
-        {
-            Debug.LogWarning($"[CoffeeMachine] Failed to add cup: slot {slotIndex} is already occupied");
+            Debug.Log($"Added cup to slot {slotIndex} at position {(slotIndex == 0 ? leftSlotPosition : rightSlotPosition)}");
         }
     }
 
     public bool TryRemoveCup(Vector3 clickPosition, out int position)
     {
         position = clickPosition.x < transform.position.x ? 0 : 1;
-
-        if (debugMode)
-        {
-            Debug.Log($"[CoffeeMachine] TryRemoveCup: Position {position}, " +
-                      $"isPresent={slots[position].isPresent}, isFilled={slots[position].isFilled}");
-        }
 
         if (slots[position].isPresent && slots[position].isFilled)
         {
@@ -158,15 +112,18 @@ public class CoffeeMachine : MonoBehaviour
             if (cappuccino != null)
             {
                 cappuccino.SetActive(true);
+                //Debug.Log($"Cappuccino activated after cup removal from slot {position}!");
             }
             else
             {
-                Debug.LogWarning("[CoffeeMachine] Cappuccino reference is missing in CoffeeMachine.");
+                Debug.LogWarning("Cappuccino reference is missing in CoffeeMachine.");
             }
             return true;
         }
         return false;
     }
+
+
 
     private void UpdateAnimation()
     {
@@ -184,10 +141,7 @@ public class CoffeeMachine : MonoBehaviour
         coffeeAnimator.ResetTrigger("BothCupsEmpty");
 
         string triggerName = DetermineAnimationState();
-        if (debugMode)
-        {
-            Debug.Log($"[CoffeeMachine] Setting animation trigger: {triggerName}");
-        }
+        //Debug.Log($"Setting animation trigger: {triggerName}");
         coffeeAnimator.SetTrigger(triggerName);
     }
 
@@ -214,33 +168,5 @@ public class CoffeeMachine : MonoBehaviour
         }
 
         return "idle";
-    }
-
-    public void DebugSlotStatus()
-    {
-        Debug.Log("===== COFFEE MACHINE SLOT STATUS =====");
-        Debug.Log($"Left Slot (0): Present={slots[0].isPresent}, Filled={slots[0].isFilled}, Timer={slots[0].brewTimer}");
-        Debug.Log($"Right Slot (1): Present={slots[1].isPresent}, Filled={slots[1].isFilled}, Timer={slots[1].brewTimer}");
-        Debug.Log("=====================================");
-    }
-
-    // Add debug method to check collisions
-    private void OnDrawGizmos()
-    {
-        if (debugMode)
-        {
-            // Draw slot positions
-            Gizmos.color = Color.blue;
-            Gizmos.DrawSphere(leftSlotPosition, 0.1f);
-            Gizmos.DrawSphere(rightSlotPosition, 0.1f);
-
-            // Draw coffee machine collider
-            Gizmos.color = Color.green;
-            BoxCollider2D collider = GetComponent<BoxCollider2D>();
-            if (collider != null)
-            {
-                Gizmos.DrawWireCube(transform.position + (Vector3)collider.offset, collider.size);
-            }
-        }
     }
 }
