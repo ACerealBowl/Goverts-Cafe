@@ -269,7 +269,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9eb69b6920b7984faffa03a577c3b1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  plateId: 1
+  plateId: 0
 --- !u!1 &33316409
 GameObject:
   m_ObjectHideFlags: 0
@@ -1560,7 +1560,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9eb69b6920b7984faffa03a577c3b1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  plateId: 2
+  plateId: 0
 --- !u!1 &578142646
 GameObject:
   m_ObjectHideFlags: 0
@@ -4248,7 +4248,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
-      - m_Target: {fileID: 1668001582}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: CupSystem, Assembly-CSharp
         m_MethodName: fixRetard
         m_Mode: 1
@@ -5934,7 +5934,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9eb69b6920b7984faffa03a577c3b1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  plateId: 3
+  plateId: 0
 --- !u!1 &1625840466
 GameObject:
   m_ObjectHideFlags: 0
@@ -6115,8 +6115,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1668001580}
   - component: {fileID: 1668001581}
-  - component: {fileID: 1668001582}
   - component: {fileID: 1668001583}
+  - component: {fileID: 1668001585}
   - component: {fileID: 1668001584}
   m_Layer: 0
   m_Name: cups
@@ -6192,26 +6192,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &1668001582
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1668001579}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9d653b0709e426d41a40751ec5be7125, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cup: {fileID: 497272098}
-  dishwasher: {fileID: 1743224737}
-  cupsHD: {fileID: 2108392917}
-  cupsAnimator: {fileID: 1668001584}
-  cameraAnimator: {fileID: 2131373637}
-  nrAnimator: {fileID: 2082898825}
-  dirtyCupsCount: 0
-  numberText: {fileID: 2082898822}
 --- !u!70 &1668001583
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -6268,6 +6248,26 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1668001585
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1668001579}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdb1b8d6de3d9d14c8eae07307844cd6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cup: {fileID: 497272098}
+  dishwasher: {fileID: 1743224737}
+  cupsHD: {fileID: 2108392917}
+  cupsAnimator: {fileID: 1668001584}
+  cameraAnimator: {fileID: 2131373637}
+  nrAnimator: {fileID: 2082898825}
+  dirtyCupsCount: 0
+  numberText: {fileID: 2082898822}
 --- !u!1 &1705675322
 GameObject:
   m_ObjectHideFlags: 0
@@ -7957,7 +7957,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mtCup: {fileID: 1469950083}
   cappuccino: {fileID: 868720056}
-  cupSystem: {fileID: 1668001582}
+  cupSystem: {fileID: 0}
   debugMode: 0
 --- !u!95 &2108392922
 Animator:
@@ -8396,9 +8396,9 @@ MonoBehaviour:
   CoffeeAnimator: {fileID: 1047981241}
   PastryAnimator: {fileID: 735867302}
   DishesMenu: 0
-  cupSystem: {fileID: 1668001582}
-  pastrySystem: {fileID: 0}
-  plateAnimController: {fileID: 0}
+  cupSystem: {fileID: 1668001585}
+  pastrySystem: {fileID: 735867300}
+  plateAnimController: {fileID: 811782068}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
