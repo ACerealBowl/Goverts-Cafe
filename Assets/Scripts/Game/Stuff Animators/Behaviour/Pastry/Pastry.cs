@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class Pastry : MonoBehaviour
 {
     [SerializeField] private SpriteRenderer spriteRenderer;
-    [SerializeField] private GameObject pastryPrefab;  // Changed from cake to pastryPrefab
+    [SerializeField] private GameObject pastryPrefab;
     [SerializeField] private Sprite[] pastrySprites;
     [SerializeField] private string[] pastryTypes = { "Cake", "Donut", "Tiramisu", "Muffin" };
     [SerializeField] private GameObject selectionMenu;
@@ -14,9 +14,12 @@ public class Pastry : MonoBehaviour
     [SerializeField] private Animator menuAnimator;
     [SerializeField] private PlateSystem plateSystem;
 
+    [SerializeField] private bool isVisible = true;
+
     private bool isMenuOpen = false;
-    private GameObject currentPastry = null;  // Track the current pastry being created
+    private GameObject currentPastry = null;
     private int currentSpriteIndex = 0;
+    private List<GameObject> activeUnplacedPastries = new List<GameObject>();
 
     private void Start()
     {
@@ -38,7 +41,6 @@ public class Pastry : MonoBehaviour
 
     private void Update()
     {
-        // Make the current pastry follow the mouse if it exists
         if (currentPastry != null && currentPastry.activeSelf)
         {
             Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -58,70 +60,88 @@ public class Pastry : MonoBehaviour
 
     private void OnMouseDown()
     {
-        // Only show menu if no pastry is currently being created and menu isn't open
-        if (gameObject.activeSelf && currentPastry == null && !isMenuOpen)
+        if (!isVisible || !CameraAnimator.Instance.IsPastryViewActive || isMenuOpen || currentPastry != null)
         {
-            CenterMenu();
-            selectionMenu.SetActive(true);
-            menuAnimator.SetTrigger("open");
-            isMenuOpen = true;
-            Debug.Log("Opening pastry menu");
+            return;
         }
-        else
-        {
-            Debug.Log("Cannot open menu: currentPastry=" + (currentPastry != null ? "exists" : "null") + ", isMenuOpen=" + isMenuOpen);
-        }
+
+        CenterMenu();
+        selectionMenu.SetActive(true);
+        menuAnimator.SetTrigger("open");
+        isMenuOpen = true;
+        Debug.Log("Opening pastry menu");
     }
 
     private void SelectPastry(int index)
     {
         Debug.Log("SelectPastry called with index: " + index);
 
-        // Create a new instance of the pastry prefab
         if (pastryPrefab != null)
         {
-            // Instantiate a new pastry object
             currentPastry = Instantiate(pastryPrefab, transform);
             currentSpriteIndex = index;
+            activeUnplacedPastries.Add(currentPastry);
 
-            // Set the sprite for the new pastry
             SpriteRenderer pastrySpriteRenderer = currentPastry.GetComponent<SpriteRenderer>();
             if (pastrySpriteRenderer != null && pastrySprites != null && index < pastrySprites.Length)
             {
                 pastrySpriteRenderer.sprite = pastrySprites[index];
             }
 
-            // Position at mouse
             Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             mousePosition.z = 0f;
             currentPastry.transform.position = mousePosition;
             currentPastry.SetActive(true);
 
-            // Register with the plate system
             if (plateSystem != null && index < pastryTypes.Length)
             {
                 plateSystem.RegisterNewItem(currentPastry, pastryTypes[index], index);
                 Debug.Log("Registered new item with PlateSystem: " + pastryTypes[index]);
             }
-            else
-            {
-                Debug.LogError("PlateSystem is null or index out of range!");
-            }
-        }
-        else
-        {
-            Debug.LogError("Pastry prefab is not assigned!");
         }
 
         selectionMenu.SetActive(false);
         isMenuOpen = false;
     }
 
-    // Called when the pastry is placed on a plate or discarded
     public void ResetPastrySystem()
     {
-        // Just clear the reference - don't destroy the object as PlateSystem handles that
+        if (currentPastry != null)
+        {
+            activeUnplacedPastries.Remove(currentPastry);
+        }
         currentPastry = null;
         Debug.Log("Pastry system reset");
+    }
+
+    public void SetVisibility(bool visible)
+    {
+        isVisible = visible;
+
+        SpriteRenderer dispenserRenderer = GetComponent<SpriteRenderer>();
+        if (dispenserRenderer != null)
+        {
+            dispenserRenderer.enabled = visible;
+        }
+
+        foreach (var pastry in activeUnplacedPastries)
+        {
+            if (pastry != null)
+            {
+                SpriteRenderer pastryRenderer = pastry.GetComponent<SpriteRenderer>();
+                if (pastryRenderer != null)
+                {
+                    pastryRenderer.enabled = visible;
+                }
+            }
+        }
+
+        if (!visible && isMenuOpen)
+        {
+            selectionMenu.SetActive(false);
+            isMenuOpen = false;
+        }
+
+        Debug.Log($"Pastry system visibility set to {visible}");
     }
 }

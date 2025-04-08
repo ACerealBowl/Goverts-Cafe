@@ -134,6 +134,7 @@ GameObject:
   - component: {fileID: 21562641}
   - component: {fileID: 21562643}
   - component: {fileID: 21562642}
+  - component: {fileID: 21562644}
   m_Layer: 0
   m_Name: Leftplate
   m_TagString: Untagged
@@ -256,6 +257,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   plateSystem: {fileID: 811782067}
+--- !u!114 &21562644
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 21562639}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9eb69b6920b7984faffa03a577c3b1d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  plateId: 1
 --- !u!1 &33316409
 GameObject:
   m_ObjectHideFlags: 0
@@ -1001,7 +1015,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &526612837
 Transform:
   m_ObjectHideFlags: 0
@@ -1411,6 +1425,7 @@ GameObject:
   - component: {fileID: 552450540}
   - component: {fileID: 552450542}
   - component: {fileID: 552450541}
+  - component: {fileID: 552450543}
   m_Layer: 0
   m_Name: Rightplate
   m_TagString: Untagged
@@ -1533,6 +1548,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   plateSystem: {fileID: 811782067}
+--- !u!114 &552450543
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 552450538}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9eb69b6920b7984faffa03a577c3b1d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  plateId: 2
 --- !u!1 &578142646
 GameObject:
   m_ObjectHideFlags: 0
@@ -2365,6 +2393,7 @@ MonoBehaviour:
   - {fileID: 171036404}
   menuAnimator: {fileID: 1575389142}
   plateSystem: {fileID: 811782067}
+  isVisible: 1
 --- !u!70 &735867301
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -2421,6 +2450,60 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!1 &746833336
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 746833337}
+  - component: {fileID: 746833338}
+  m_Layer: 0
+  m_Name: Debug
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &746833337
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 746833336}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -959.10095, y: -539.0637, z: 2.9830773}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1287446825}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &746833338
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 746833336}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32a9016ea3233d1438d8ed740f07334f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  coffeeMachine: {fileID: 1977129040}
+  cleanCupsSystem: {fileID: 2108392921}
+  pastrySystem: {fileID: 735867300}
+  plateSystem: {fileID: 811782067}
+  showDebugUI: 1
+  debugPanel: {fileID: 0}
+  statusText: {fileID: 0}
+  toggleDebugKey: 282
+  dumpStateKey: 283
+  checkInteractionKey: 284
 --- !u!1 &756945764
 GameObject:
   m_ObjectHideFlags: 0
@@ -2517,6 +2600,7 @@ GameObject:
   - component: {fileID: 811782064}
   - component: {fileID: 811782065}
   - component: {fileID: 811782067}
+  - component: {fileID: 811782068}
   - component: {fileID: 811782066}
   m_Layer: 0
   m_Name: globalPlates
@@ -2629,7 +2713,21 @@ MonoBehaviour:
   - {fileID: 552450539}
   - {fileID: 1616059257}
   plateRadius: 0.93
-  pastrySystem: {fileID: 0}
+  pastrySystem: {fileID: 735867300}
+--- !u!114 &811782068
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 811782061}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18014772efa24ab43b574f5f3200dbd7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  plateAnimator: {fileID: 811782064}
+  pastrySystem: {fileID: 735867300}
 --- !u!1 &868720056
 GameObject:
   m_ObjectHideFlags: 0
@@ -2676,6 +2774,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24923966fae1ae449a03190ad80e22c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  debugMode: 0
 --- !u!212 &868720059
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -4787,6 +4886,7 @@ RectTransform:
   - {fileID: 2002933644}
   - {fileID: 1625840467}
   - {fileID: 218229044}
+  - {fileID: 746833337}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -5008,6 +5108,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6c6b63fe4a3d0842abda2dffb04ad56, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  debugMode: 0
 --- !u!58 &1469950086
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -5698,6 +5799,7 @@ GameObject:
   - component: {fileID: 1616059258}
   - component: {fileID: 1616059260}
   - component: {fileID: 1616059259}
+  - component: {fileID: 1616059261}
   m_Layer: 0
   m_Name: Topplate
   m_TagString: Untagged
@@ -5820,6 +5922,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   plateSystem: {fileID: 811782067}
+--- !u!114 &1616059261
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1616059256}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9eb69b6920b7984faffa03a577c3b1d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  plateId: 3
 --- !u!1 &1625840466
 GameObject:
   m_ObjectHideFlags: 0
@@ -5835,7 +5950,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1625840467
 Transform:
   m_ObjectHideFlags: 0
@@ -7142,7 +7257,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1567834547
   m_SortingLayer: 3
-  m_SortingOrder: 0
+  m_SortingOrder: 3
   m_Sprite: {fileID: 21300000, guid: f3c49efd9ed858c4b9b50e3144c6f765, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -7192,6 +7307,7 @@ MonoBehaviour:
   cappuccino: {fileID: 868720056}
   leftSlotPosition: {x: -4.32, y: 0.14, z: -10}
   rightSlotPosition: {x: -2.31, y: 0.35, z: -10}
+  debugMode: 0
 --- !u!61 &1977129041
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -7842,6 +7958,7 @@ MonoBehaviour:
   mtCup: {fileID: 1469950083}
   cappuccino: {fileID: 868720056}
   cupSystem: {fileID: 1668001582}
+  debugMode: 0
 --- !u!95 &2108392922
 Animator:
   serializedVersion: 5
@@ -8280,6 +8397,8 @@ MonoBehaviour:
   PastryAnimator: {fileID: 735867302}
   DishesMenu: 0
   cupSystem: {fileID: 1668001582}
+  pastrySystem: {fileID: 0}
+  plateAnimController: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
