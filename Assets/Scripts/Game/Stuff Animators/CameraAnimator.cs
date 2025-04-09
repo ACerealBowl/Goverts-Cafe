@@ -18,6 +18,13 @@ public class CameraAnimator : MonoBehaviour
 
     public static CameraAnimator Instance;
     public bool IsPastryViewActive { get; private set; }
+    public bool IsInCoffeeViewActive { get; private set; }
+
+    // FilledCup scale values for different views
+    private const float FILLED_CUP_SCALE_COFFEE = 0.45f;
+    private const float FILLED_CUP_SCALE_INCOFFEE = 0.50f;
+    private const float FILLED_CUP_SCALE_DEFAULT = 0.37f;
+
     // Pastry scale values for different views
     private const float PASTRY_SCALE_CASH_REGISTER = 0.12f;
     private const float PASTRY_SCALE_COFFEE = 0.15f;
@@ -69,6 +76,8 @@ public class CameraAnimator : MonoBehaviour
         StartCoroutine(HideCupsSigma());
         DishesMenu = false;
         StartCoroutine(hidePastry());
+        IsInCoffeeViewActive = false;
+        IsPastryViewActive = false;
     }
 
     public void UNPLATEme()
@@ -85,11 +94,13 @@ public class CameraAnimator : MonoBehaviour
     public void HideCoffeeMachine()
     {
         StartCoroutine(hideCoffee());
+        IsInCoffeeViewActive = false;
     }
 
     public void HidePastry()
     {
         StartCoroutine(hidePastry());
+        IsPastryViewActive = false;
     }
 
     private IEnumerator ShowPlates()
@@ -202,6 +213,10 @@ public class CameraAnimator : MonoBehaviour
         StartCoroutine(HidePlates());
         StartCoroutine(ShowCupsSigma());
         IsPastryViewActive = false;
+        IsInCoffeeViewActive = false;
+
+        // Scale filled cups for default view
+        ScaleAllFilledCups(FILLED_CUP_SCALE_DEFAULT);
     }
 
     public void PlayCoffeeAnimation()
@@ -211,6 +226,23 @@ public class CameraAnimator : MonoBehaviour
         StartCoroutine(ShowCoffee());
         Platorz.SetTrigger("idle");
         IsPastryViewActive = false;
+        IsInCoffeeViewActive = false;
+
+        // Scale filled cups for coffee view
+        ScaleAllFilledCups(FILLED_CUP_SCALE_COFFEE);
+    }
+
+    public void PlayInCoffeeAnimation()
+    {
+        StartCoroutine(AnimationSequence("InCoffeeView"));
+        StartCoroutine(ShowPlates());
+        StartCoroutine(ShowCoffee());
+        Platorz.SetTrigger("InCoffee");
+        IsPastryViewActive = false;
+        IsInCoffeeViewActive = true;
+
+        // Scale filled cups for in-coffee view
+        ScaleAllFilledCups(FILLED_CUP_SCALE_INCOFFEE);
     }
 
     public void PlayPastryAnimation()
@@ -220,6 +252,10 @@ public class CameraAnimator : MonoBehaviour
         StartCoroutine(ShowPlates());
         Platorz.SetTrigger("Pastry");
         IsPastryViewActive = true;
+        IsInCoffeeViewActive = false;
+
+        // Scale filled cups for default view
+        ScaleAllFilledCups(FILLED_CUP_SCALE_DEFAULT);
     }
 
     public void PlayCashRegisterAnimation()
@@ -228,8 +264,13 @@ public class CameraAnimator : MonoBehaviour
         StartCoroutine(ShowPlates());
         Platorz.SetTrigger("CashRegister");
         IsPastryViewActive = false;
+        IsInCoffeeViewActive = false;
+
         // Scale pastries for cash register view
         ScaleAllPastries(PASTRY_SCALE_CASH_REGISTER);
+
+        // Scale filled cups for default view
+        ScaleAllFilledCups(FILLED_CUP_SCALE_DEFAULT);
     }
 
     private IEnumerator AnimationSequence(string triggerName)
@@ -242,11 +283,29 @@ public class CameraAnimator : MonoBehaviour
         publicFade.FadeIn();
     }
 
-    // New method to scale all pastries (both placed and unplaced)
+    // New method to scale all filled cups
+    private void ScaleAllFilledCups(float scale)
+    {
+        // Scale placed filled cups through GameManager
+        if (GameManager.Instance != null)
+        {
+            var allPlates = GameManager.Instance.GetAllPlateContents();
+            foreach (var plate in allPlates)
+            {
+                foreach (var item in plate.Value)
+                {
+                    if (item.itemObject != null && item.itemType == "FilledCup")
+                    {
+                        item.itemObject.transform.localScale = new Vector3(scale, scale, scale);
+                    }
+                }
+            }
+        }
+    }
+
+    // Method to scale all pastries (both placed and unplaced)
     private void ScaleAllPastries(float scale)
     {
-
-
         // Scale placed pastries through GameManager
         if (GameManager.Instance != null)
         {

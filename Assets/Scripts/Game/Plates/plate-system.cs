@@ -35,6 +35,22 @@ public class PlateSystem : MonoBehaviour
         }
     }
 
+    private bool IsFilledCupItem(GameObject item)
+    {
+        foreach (Transform plate in plates)
+        {
+            var itemsOnPlate = GameManager.Instance.GetItemsOnPlate(plate.gameObject);
+            foreach (var itemData in itemsOnPlate)
+            {
+                if (itemData.itemObject == item && itemData.itemType == "FilledCup")
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     private void FindPastrySystemIfNull()
     {
         if (pastrySystem == null)
@@ -97,8 +113,28 @@ public class PlateSystem : MonoBehaviour
                 DiscardCurrentItem();
                 return;
             }
+
+            // Check for FilledCup placement in views
+            if (currentItemType == "FilledCup" && !CanPlaceFilledCupInCurrentView())
+            {
+                Debug.Log("Cannot place filled cup in this view");
+                DiscardCurrentItem();
+                return;
+            }
+
             PlaceItemOnPlate(targetPlate.gameObject, mousePosition);
         }
+    }
+
+    private bool CanPlaceFilledCupInCurrentView()
+    {
+        // FilledCups can be placed in Coffee or InCoffee views
+        if (CameraAnimator.Instance != null)
+        {
+            return CameraAnimator.Instance.IsInCoffeeViewActive ||
+                   !CameraAnimator.Instance.IsPastryViewActive; // Allow in any non-pastry view
+        }
+        return true; // Default to allowing placement if CameraAnimator can't be found
     }
 
     private void TryPickUpItem(Vector3 mousePosition)
@@ -112,8 +148,27 @@ public class PlateSystem : MonoBehaviour
                 Debug.Log("Can't interact with pastries in this view");
                 return;
             }
+
+            // Prevent picking up filled cups in certain views
+            if (IsFilledCupItem(itemToPickUp) && !CanPickUpFilledCupInCurrentView())
+            {
+                Debug.Log("Can't pick up filled cup in this view");
+                return;
+            }
+
             PickUpExistingItem(itemToPickUp, mousePosition);
         }
+    }
+
+    private bool CanPickUpFilledCupInCurrentView()
+    {
+        // FilledCups can be picked up in Coffee or InCoffee views or any non-pastry view
+        if (CameraAnimator.Instance != null)
+        {
+            return CameraAnimator.Instance.IsInCoffeeViewActive ||
+                   !CameraAnimator.Instance.IsPastryViewActive;
+        }
+        return true; // Default to allowing pickup if CameraAnimator can't be found
     }
 
     private bool IsPastryItem(GameObject item)
@@ -197,7 +252,19 @@ public class PlateSystem : MonoBehaviour
                     GameManager.Instance.RemoveItemFromPlate(item, plate.gameObject);
 
                     FilledCup filledCup = item.GetComponent<FilledCup>();
-                    filledCup?.SetHeld();
+                    if (filledCup != null)
+                    {
+                        filledCup.SetHeld();
+
+                        // Apply appropriate scale when picked up based on current view
+                        if (CameraAnimator.Instance != null)
+                        {
+                            if (CameraAnimator.Instance.IsInCoffeeViewActive)
+                            {
+                                // Already handled by FilledCup.SetHeld()
+                            }
+                        }
+                    }
 
                     Debug.Log($"Picked up {currentItemType} from plate {plate.GetComponent<PlateIdentifier>().GetPlateId()}");
                     return;
@@ -219,7 +286,16 @@ public class PlateSystem : MonoBehaviour
         GameManager.Instance.AddItemToPlate(currentPickedItem, plate, currentItemType, currentSpriteIndex);
 
         FilledCup filledCup = currentPickedItem.GetComponent<FilledCup>();
-        filledCup?.SetPlaced();
+        if (filledCup != null)
+        {
+            filledCup.SetPlaced();
+
+            // Apply appropriate scale when placed based on current view
+            if (CameraAnimator.Instance != null)
+            {
+                // The scale is already handled by FilledCup.SetPlaced() and CameraAnimator.ScaleAllFilledCups
+            }
+        }
 
         if (IsPastryType(currentItemType) && pastrySystem != null)
         {
